@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaPurgatory", "PlasmaPurgatory\PlasmaPurgatory.csproj", "{0C76F9E9-D916-4E0E-9BF1-8A3B995126CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{A6F15E85-A289-4AD7-BD1A-50317C3BB91B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0C76F9E9-D916-4E0E-9BF1-8A3B995126CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C76F9E9-D916-4E0E-9BF1-8A3B995126CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C76F9E9-D916-4E0E-9BF1-8A3B995126CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F15E85-A289-4AD7-BD1A-50317C3BB91B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F15E85-A289-4AD7-BD1A-50317C3BB91B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F15E85-A289-4AD7-BD1A-50317C3BB91B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F15E85-A289-4AD7-BD1A-50317C3BB91B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
