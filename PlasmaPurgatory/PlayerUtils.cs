@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PlasmaPurgatory
 {
-    class PlayerUtility
+    class PlayerUtils
     {
     }
 }
