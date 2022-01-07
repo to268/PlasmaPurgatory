@@ -12,11 +12,18 @@ using MonoGame.Extended.TextureAtlases;
 namespace PlasmaPurgatory
 {
     class Menu : Game
-    {
+    {   
+        struct Button
+        {
+            public Texture2D tex;
+            public Vector2 itex;
+            //TODO: Add callback field
+        }
+
+        private Button bStart;
         private GraphicsDeviceManager gdm;
-        private Texture2D sStart;
         private SpriteBatch sp;
-        private Vector2 iStart;
+        
 
         public Menu(GraphicsDeviceManager gdm, SpriteBatch sp)
         {
@@ -28,13 +35,14 @@ namespace PlasmaPurgatory
         {
             gdm = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            iStart = new Vector2(0, 0);
+            bStart.itex = new Vector2(0, 0);
+            bStart = new Button();
             base.Initialize();
         }
 
         public void LoadContent()
         {
-            sStart = Content.Load<Texture2D>("PlayButton");
+            bStart.tex = Content.Load<Texture2D>("PlayButton");
             base.LoadContent();
         }
 
@@ -46,7 +54,7 @@ namespace PlasmaPurgatory
         public void Draw(GameTime gameTime)
         {
             sp.Begin();
-            sp.Draw(sStart, iStart, Color.White);
+            sp.Draw(bStart.tex, bStart.itex, Color.White);
             sp.End();
             base.Draw(gameTime);
         }
