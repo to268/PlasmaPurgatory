@@ -20,7 +20,8 @@ namespace PlasmaPurgatory
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            menu = new Menu(_graphics);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            menu = new Menu(_graphics,_spriteBatch);
             base.Initialize();
         }
 
@@ -29,6 +30,7 @@ namespace PlasmaPurgatory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            menu.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
