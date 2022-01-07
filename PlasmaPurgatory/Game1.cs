@@ -8,6 +8,7 @@ namespace PlasmaPurgatory
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Menu menu;
 
         public Game1()
         {
@@ -19,7 +20,7 @@ namespace PlasmaPurgatory
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            menu = new Menu(_graphics);
             base.Initialize();
         }
 
