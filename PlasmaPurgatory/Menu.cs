@@ -32,7 +32,7 @@ namespace PlasmaPurgatory
 
         public void LoadContent()
         {
-            sStart = Content.Load<Texture2D>("PlayButton");
+            // sStart = Content.Load<Texture2D>("PlayButton");
             base.LoadContent();
         }
 
