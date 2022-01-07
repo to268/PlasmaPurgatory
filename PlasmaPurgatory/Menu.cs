@@ -26,6 +26,8 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
+            gdm = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
             iStart = new Vector2(0, 0);
             base.Initialize();
         }
