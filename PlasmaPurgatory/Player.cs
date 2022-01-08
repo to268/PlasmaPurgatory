@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Serialization;
@@ -10,96 +7,73 @@ using MonoGame.Extended.Sprites;
 
 namespace PlasmaPurgatory
 {
-    public enum TypeAnimation { walkSouth, walkNorth, walkEast, walkWest, idle };
     class Player : PlayerUtils
     {
-        private AnimatedSprite spriteplayer;
-        private TypeAnimation animationPlayer;
-        private Vector2 positionPlayer;
         private KeyboardState keyboardState;
 
-        public AnimatedSprite SpritePlayer
+        public Player(ContentManager contentManager)
         {
-            get
-            {
-                return this.spriteplayer;
-            }
-
-            set
-            {
-                this.spriteplayer = value;
-            }
+            base.contentManager = contentManager;
         }
 
-        public TypeAnimation AnimationPlayer
+        public void Initialize()
         {
-            get
-            {
-                return this.animationPlayer;
-            }
-
-            set
-            {
-                this.animationPlayer = value;
-            }
+            position = new Vector2(0, 0);
         }
 
-        public Player()
+        public void LoadContent()
         {
-
-        }
-        
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
-            positionPlayer = new Vector2();
-            base.Initialize();
+            animationSheet = contentManager.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            animatedSprite = new AnimatedSprite(animationSheet);
         }
 
-        protected override void LoadContent()
-        {
-            SpriteSheet animation = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
-            SpritePlayer = new AnimatedSprite(animation);
-        }
-
-        protected override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             keyboardState = Keyboard.GetState();
-            AnimationPlayer = TypeAnimation.idle;
-            bool toucheBordFenetre = false;
-            Vector2 deplacement = new Vector2(0, 0);
+            animationState = AnimationState.idle;
+
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                AnimationPlayer = TypeAnimation.walkNorth;
-                
-                deplacement = new Vector2(0, -1);
+                animationState = AnimationState.walkNorth;
+
+                movement = new Vector2(0, -1);
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                AnimationPlayer = TypeAnimation.walkSouth;
-                
-                deplacement = new Vector2(0, 1);
+                animationState = AnimationState.walkSouth;
+
+                movement = new Vector2(0, 1);
             }
             else if (keyboardState.IsKeyDown(Keys.Left))
             {
-                AnimationPlayer = TypeAnimation.walkWest;
-                
-                deplacement = new Vector2(-1, 0);
+                animationState = AnimationState.walkWest;
+
+                movement = new Vector2(-1, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                AnimationPlayer = TypeAnimation.walkEast;
-               
-                deplacement = new Vector2(1, 0);
+                animationState = AnimationState.walkEast;
+
+                movement = new Vector2(1, 0);
             }
+            else
+            {
+                animationState = AnimationState.idle;
+
+                movement = new Vector2(0, 0);
+            }
+
+            // Check bounds with the window before applying the movement
+
+            /*
             if (Collision == TypeCollisionMapMaison.Rien && !toucheBordFenetre)
                  positionPlayer += walkSpeed * deplacement;
 
             Player.Play(AnimationPlayer.ToString());
             Player.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            */
         }
 
     }
 
-    }
 }
