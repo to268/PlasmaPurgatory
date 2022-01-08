@@ -6,31 +6,35 @@ namespace PlasmaPurgatory
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
         private Menu menu;
+        private PatternGenerator patternGenerator;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            menu = new Menu(_graphics,_spriteBatch);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            menu = new Menu(graphics, spriteBatch);
+
+            patternGenerator = new PatternGenerator(Content, GraphicsDevice,
+                                                    GraphicsDevice.Viewport.Width,
+                                                    GraphicsDevice.Viewport.Height);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             menu.LoadContent();
+            patternGenerator.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -38,8 +42,7 @@ namespace PlasmaPurgatory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
+            patternGenerator.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -47,8 +50,7 @@ namespace PlasmaPurgatory
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-
+            patternGenerator.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

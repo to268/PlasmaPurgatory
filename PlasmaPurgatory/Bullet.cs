@@ -1,49 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
 
 namespace PlasmaPurgatory
 {
-    class Bullet : Game
+    class Bullet 
     {
+        private ContentManager contentManager;
+        private GraphicsDevice graphicsDevice;
+        private SpriteBatch spriteBatch;
         private Vector2 postion;
         private Texture2D texture;
+        private Color color;
 
-        public Vector2 position
+        public Vector2 Position
         {
             get { return postion; }
             set { postion = value; }
         }
 
-        public Bullet(Vector2 initialPosition)
+        public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 initialPosition)
         {
-            position = initialPosition;
+            Position = initialPosition;
+            color = Color.White;
+            this.contentManager = contentManager;
+            this.graphicsDevice = graphicsDevice;
         }
 
-        protected override void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
         }
 
-        protected override void LoadContent()
+        public void LoadContent()
         {
-            //texture = Content.Load <Texture2D>("path");
-            base.LoadContent();
+            spriteBatch = new SpriteBatch(graphicsDevice);
+            texture = contentManager.Load <Texture2D>("bullet");
         }
 
-
-        protected override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, Position, color);
+            spriteBatch.End();
         }
     }
 }
