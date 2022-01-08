@@ -1,62 +1,79 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.TextureAtlases;
+using Microsoft.Xna.Framework.Content;
 
 namespace PlasmaPurgatory
 {
-    class Menu : Game
+    class Menu
     {   
         struct Button
         {
-            public Texture2D tex;
-            public Vector2 itex;
-            //TODO: Add callback field
+            public Vector2 position;
+            public Texture2D texture;
+            public Color color;
+            public Action callback;
         }
 
-        private Button bStart;
-        private GraphicsDeviceManager gdm;
-        private SpriteBatch sp;
-        
+        private Button[] buttons;
+        private GraphicsDevice graphicsDevice;
+        private SpriteBatch spriteBatch;
+        private ContentManager contentManager;
 
-        public Menu(GraphicsDeviceManager gdm, SpriteBatch sp)
+        private const int BUTTONS_COUNT = 1;
+
+        public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
-            this.gdm = gdm;
-            this.sp = sp;
+            this.graphicsDevice = graphicsDevice;
+            this.contentManager = contentManager;
+
+            buttons = new Button[BUTTONS_COUNT];
+            PopulateButtonArray();
         }
 
         public void Initialize()
         {
-            gdm = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            bStart.itex = new Vector2(0, 0);
-            bStart = new Button();
-            base.Initialize();
+            // Start button properties
+            buttons[0].position = new Vector2(0, 0);
+            buttons[0].color = Color.White;
         }
 
         public void LoadContent()
         {
-            bStart.tex = Content.Load<Texture2D>("PlayButton");
-            base.LoadContent();
+            spriteBatch = new SpriteBatch(graphicsDevice);
+
+            // Start button texture loading
+            buttons[0].texture = contentManager.Load<Texture2D>("PlayButton");
         }
 
         public void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
-            sp.Begin();
-            sp.Draw(bStart.tex, bStart.itex, Color.White);
-            sp.End();
-            base.Draw(gameTime);
+            spriteBatch.Begin();
+
+            foreach (Button button in buttons)
+            {
+                DrawButton(button);
+            }
+
+            spriteBatch.End();
+        }
+
+
+        private void PopulateButtonArray()
+        {
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i] = new Button();
+            }
+        }
+
+        private void DrawButton(Button button)
+        {
+            spriteBatch.Draw(button.texture, button.position, button.color);
         }
 
     }
