@@ -16,6 +16,8 @@ namespace PlasmaPurgatory
             public Color color;
             public Action callback;
             public Vector2 origin;
+            public Rectangle hitbox;
+
         }
 
         
@@ -42,13 +44,15 @@ namespace PlasmaPurgatory
             // Start button properties
            
             buttons[0].position = new Vector2(graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height/3);
+            
             buttons[0].color = Color.White;
+            
 
             buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height /2);
             buttons[1].color = Color.White;
             
-            mouseState = Mouse.GetState();
-            mousePosition = new Point(mouseState.X, mouseState.Y);
+            
+            
         }
 
         public void LoadContent()
@@ -63,20 +67,38 @@ namespace PlasmaPurgatory
             buttons[1].origin = new Vector2(buttons[1].texture.Width / 2, buttons[1].texture.Height / 2);
         }
 
+        bool EnterButton(Button button)
+        {
+            
+            if (mousePosition.X < button.texture.Bounds.X + button.texture.Width &&
+                    mousePosition.X > button.texture.Bounds.X &&
+                    mousePosition.Y < button.texture.Bounds.Y + button.texture.Height &&
+                    mousePosition.Y > button.texture.Bounds.Y)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void Update(GameTime gameTime)
         {
-            if (mouseState.LeftButton == ButtonState.Pressed )
+            buttons[0].hitbox = new Rectangle(buttons[0].texture.Bounds.X, buttons[0].texture.Bounds.Y,
+                                              buttons[0].texture.Width, buttons[0].texture.Height);
+            
+            mouseState = Mouse.GetState();
+            mousePosition = new Point(mouseState.X, mouseState.Y);
+            if (mouseState.LeftButton == ButtonState.Pressed && buttons[0].hitbox.Contains(mousePosition))
             {
-                Debug.WriteLine("Boutton clické");
-                buttons[1].texture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Optionscol_Button");
                 
+                buttons[0].texture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Optionscol_Button");
+                Debug.WriteLine(buttons[0].texture.Width + " " + buttons[0].texture.Height);
             }
         }
 
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-
+            
             foreach (Button button in buttons)
             {
                 spriteBatch.Draw(button.texture, button.position, null, button.color,
@@ -94,6 +116,8 @@ namespace PlasmaPurgatory
                 buttons[i] = new Button();
             }
         }
+
+        
 
     }
 }
