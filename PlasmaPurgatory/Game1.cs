@@ -9,6 +9,7 @@ namespace PlasmaPurgatory
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Menu menu;
+        private Player player;
 
         public Game1()
         {
@@ -22,6 +23,8 @@ namespace PlasmaPurgatory
             // TODO: Add your initialization logic here
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             menu = new Menu(_graphics, _spriteBatch);
+            player = new Player(Content, GraphicsDevice);
+            player.Initialize();
             base.Initialize();
         }
 
@@ -31,6 +34,7 @@ namespace PlasmaPurgatory
 
             // TODO: use this.Content to load your game content here
             menu.LoadContent();
+            player.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -39,7 +43,8 @@ namespace PlasmaPurgatory
                 Exit();
 
             // TODO: Add your update logic here
-
+            System.Console.WriteLine("Game1");
+            player.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -48,7 +53,7 @@ namespace PlasmaPurgatory
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            player.Draw(gameTime);
             base.Draw(gameTime);
         }
     }
