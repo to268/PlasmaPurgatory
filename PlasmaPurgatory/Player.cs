@@ -36,43 +36,45 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
-            Console.WriteLine("Player");
             keyboardState = Keyboard.GetState();
             animationState = AnimationState.idle;
 
             if (keyboardState.IsKeyDown(Keys.Up))
             {
                 animationState = AnimationState.walkNorth;
-                //Debug.WriteLine(position.ToString());
+
                 movement = new Vector2(0, -1);
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
                 animationState = AnimationState.walkSouth;
-                //Debug.WriteLine(position.ToString());
+
                 movement = new Vector2(0, 1);
             }
             else if (keyboardState.IsKeyDown(Keys.Left))
             {
                 animationState = AnimationState.walkWest;
-                //Debug.WriteLine(position.ToString());
+
                 movement = new Vector2(-1, 0);
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 animationState = AnimationState.walkEast;
-                Console.WriteLine("Droite");
+
                 movement = new Vector2(1, 0);
             }
             else
             {
                 animationState = AnimationState.idle;
-                //Debug.WriteLine(position.ToString());
+
                 movement = new Vector2(0, 0);
             }
-            //Debug.WriteLine(movement.ToString());
-            position += movement;
-            //Debug.WriteLine(movement * SPEED);
+            if (CheckBound(position, graphicsDevice))
+            {
+                position += movement;
+            }
+
+
 
 
             // Check bounds with the window before applying the movement
@@ -93,10 +95,9 @@ namespace PlasmaPurgatory
 
 
             spriteBatch.End();
-
-            
-            
         }
+
+        
 
     }
 

@@ -7,7 +7,6 @@ namespace PlasmaPurgatory
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
         private Menu menu;
         private Player player;
 
@@ -21,8 +20,7 @@ namespace PlasmaPurgatory
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            menu = new Menu(_graphics, _spriteBatch);
+            //menu = new Menu(_graphics, _spriteBatch);
             player = new Player(Content, GraphicsDevice);
             player.Initialize();
             base.Initialize();
@@ -30,10 +28,9 @@ namespace PlasmaPurgatory
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            menu.LoadContent();
+            //menu.LoadContent();
             player.LoadContent();
         }
 
