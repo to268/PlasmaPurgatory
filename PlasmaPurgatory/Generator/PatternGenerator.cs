@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlasmaPurgatory
+namespace PlasmaPurgatory.Generator
 {
     class PatternGenerator
     {
@@ -14,8 +14,10 @@ namespace PlasmaPurgatory
         private List<Bullet> bullets;
         private int windowWidth;
         private int windowHeight;
-        private const int MAX_ITERATIONS = 40;
+        private const int MAX_ITERATIONS = 120;
+        private const int PADDING_MULTIPLYER = 8;
 
+        // TODO: Pass a PatternPreset object to the constructor
         public PatternGenerator(ContentManager contentManager, GraphicsDevice graphicsDevice,
                                 int windowWidth, int windowHeight)
         {
@@ -28,9 +30,11 @@ namespace PlasmaPurgatory
             MandelbrotPointsCalculation();
         }
 
+        // TODO: Move this into the PatternPreset class
         private void MandelbrotPointsCalculation()
         {
             System.Numerics.Complex z = new System.Numerics.Complex(0, 0);
+            // Test value
             //System.Numerics.Complex c = new System.Numerics.Complex(-0.38, 0.53);
             System.Numerics.Complex c = new System.Numerics.Complex(-0.05, -0.63);
 
@@ -40,9 +44,6 @@ namespace PlasmaPurgatory
 
                 bullets.Add(new Bullet(contentManager, graphicsDevice, AdaptResult(z)));
             }
-            Debug.WriteLine(bullets[0].Position.ToString());
-            Debug.WriteLine(bullets[2].Position.ToString());
-            Debug.WriteLine((bullets[2].Position - bullets[0].Position).ToString());
         }
 
         private Vector2 AdaptResult(System.Numerics.Complex complex)
@@ -50,25 +51,46 @@ namespace PlasmaPurgatory
             Vector2 point = ComplexToVector(complex);
             Vector2 middle = new Vector2(windowWidth / 2, windowHeight / 2);
 
-            //float resX = middle.X + (point.X * 400)  - (windowWidth / 2.7f);
-            //float resY = (middle.Y + (point.Y * 400)) - (windowHeight / 1.25f);
-            float resX = middle.X + (point.X * 400)  - (windowWidth / 2.4f);
-            float resY = (middle.Y + (point.Y * 400)) - (windowHeight / 4.8f);
 
-            Debug.WriteLine(resX.ToString() + " " + resY.ToString());
-            return middle + new Vector2(resX, resY);
+            return middle + CenterMiddle(point, middle);
         }
 
+        private Vector2 CenterMiddle(Vector2 point, Vector2 middle)
+        {
+            // Test values
+            //middle -= new Vector2(windowWidth / 2.7f, windowHeight / 1.5f);
+            //float resX = middle.X + (point.X * (MAX_ITERATIONS * PADDING_MULTIPLYER));
+            //float resY = middle.Y + (point.Y * (MAX_ITERATIONS * PADDING_MULTIPLYER));
+
+            // 20 (multiplier * 2)
+            //middle -= new Vector2(windowWidth / 2.3f, windowHeight / 3.6f);
+            // 40
+            //middle -= new Vector2(windowWidth / 2.3f, windowHeight / 3.6f);
+            // 80
+            //middle -= new Vector2(windowWidth / 2.8f, windowHeight / -32f);
+            // 120
+            middle -= new Vector2(windowWidth / 3.4f, windowHeight / -3f);
+            float resX = middle.X + (point.X * (MAX_ITERATIONS * PADDING_MULTIPLYER));
+            float resY = middle.Y + (point.Y * (MAX_ITERATIONS * PADDING_MULTIPLYER));
+
+            Debug.WriteLine(resX.ToString() + " " + resY.ToString());
+
+            return new Vector2(resX, resY);
+        }
+
+        // TODO: Maybe move this function out in a new class
         private Vector2 ComplexToVector(System.Numerics.Complex complex)
         {
             return new Vector2((float)complex.Real, (float)complex.Imaginary);
         }
 
+        // TODO: Maybe move this function out in a new class or remove it
         private System.Numerics.Complex VectorToComplex(Vector2 vector)
         {
             return new System.Numerics.Complex(vector.X, vector.Y);
         }
 
+        // TODO: Move Monogame functions of use it a a wrapper
         public void Initialize()
         {
         }
