@@ -44,7 +44,7 @@ namespace PlasmaPurgatory
             // Start button properties
            
             buttons[0].position = new Vector2(graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height/3);
-            
+            buttons[0].position = buttons[0].position;
             buttons[0].color = Color.White;
             
 
@@ -82,8 +82,7 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
-            buttons[0].hitbox = new Rectangle(buttons[0].texture.Bounds.X, buttons[0].texture.Bounds.Y,
-                                              buttons[0].texture.Width, buttons[0].texture.Height);
+            
             
             mouseState = Mouse.GetState();
             mousePosition = new Point(mouseState.X, mouseState.Y);
@@ -99,10 +98,12 @@ namespace PlasmaPurgatory
         {
             spriteBatch.Begin();
             
-            foreach (Button button in buttons)
+            for (int i = 0; i < BUTTONS_COUNT; i++)
             {
-                spriteBatch.Draw(button.texture, button.position, null, button.color,
-                                 0, button.origin, scale, SpriteEffects.None, 0f);
+                buttons[i].hitbox = new Rectangle((int)buttons[i].position.X, (int)buttons[i].position.Y,
+                                              buttons[i].texture.Width, buttons[i].texture.Height);
+                spriteBatch.Draw(buttons[i].texture, buttons[i].position, buttons[i].hitbox, buttons[i].color,
+                                 0, buttons[i].origin, scale, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();
