@@ -8,9 +8,9 @@ namespace PlasmaPurgatory
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
         private Menu menu;
         private PatternGenerator patternGenerator;
+        private PatternPreset patternPreset;
 
         public Game1()
         {
@@ -21,20 +21,18 @@ namespace PlasmaPurgatory
 
         protected override void Initialize()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            menu = new Menu(graphics, spriteBatch);
+            //menu = new Menu(graphics, spriteBatch);
 
-            patternGenerator = new PatternGenerator(Content, GraphicsDevice,
-                                                    GraphicsDevice.Viewport.Width,
-                                                    GraphicsDevice.Viewport.Height);
+            Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            patternPreset = new PatternPreset(PatternPreset.PresetName.MANDELBROT_SPIRAL, Content, GraphicsDevice, origin, 80);
+            patternGenerator = new PatternGenerator(patternPreset);
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            menu.LoadContent();
+            //menu.LoadContent();
             patternGenerator.LoadContent();
         }
 
