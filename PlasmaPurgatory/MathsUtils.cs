@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace PlasmaPurgatory
@@ -55,7 +56,7 @@ namespace PlasmaPurgatory
             float x = polar.magnitude * MathF.Cos(polar.phase);
             float y = polar.magnitude * MathF.Sin(polar.phase);
 
-            return System.Numerics.Complex.FromPolarCoordinates(x, y);
+            return new System.Numerics.Complex(x, y);
         }
 
         public static float DegresToRadians(float degres)

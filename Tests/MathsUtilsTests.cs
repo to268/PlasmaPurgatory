@@ -31,7 +31,7 @@ namespace Tests
             Assert.Equal(new System.Numerics.Complex(real, imaginary), res);
         }
 
-        [Theory(Skip = "ComplexToPolar test is broken, need to be fixed")]
+        [Theory]
         [InlineData(14, 43)]
         public void ComplexToPolarTest(double real, double imaginary)
         {
@@ -49,11 +49,11 @@ namespace Tests
             }
 
             Assert.Equal(45.22f, MathF.Round(res.magnitude, 2));
-            Assert.Equal(71.97f, MathF.Round(res.phase, 2));
+            Assert.Equal(71.97f, MathF.Round(MathsUtils.RadiansToDegres(res.phase), 2));
         }
 
-        [Theory(Skip = "PolarToComplex test is broken, need to be fixed")]
-        [InlineData(45.22f, 71.97f)]
+        [Theory]
+        [InlineData(45, 0.52f)]
         public void PolarToComplexTest(float magnitude, float phase)
         {
             MathsUtils.Polar polar = new MathsUtils.Polar();
@@ -62,8 +62,8 @@ namespace Tests
 
             System.Numerics.Complex res = MathsUtils.PolarToComplex(polar);
 
-            Assert.Equal(14, MathF.Floor((float)res.Real));
-            Assert.Equal(43, MathF.Floor((float)res.Imaginary));
+            Assert.Equal(39.05f, MathF.Round((float)res.Real, 2));
+            Assert.Equal(22.36f, MathF.Round((float)res.Imaginary, 2));
         }
 
         [Theory]
