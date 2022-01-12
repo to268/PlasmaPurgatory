@@ -24,7 +24,16 @@ namespace PlasmaPurgatory
             //menu = new Menu(graphics, spriteBatch);
 
             Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            patternPreset = new PatternPreset(PatternPreset.PresetName.MANDELBROT_SPIRAL, Content, GraphicsDevice, origin, 80);
+
+            PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
+            polarProperties.startMagnitude = 4f;
+            polarProperties.startPhase = 0;
+            polarProperties.incrementMagnitude = 2f;
+            polarProperties.incrementPhase = MathsUtils.DegresToRadians(15f);
+            polarProperties.multiplierMagnitude = 1;
+            polarProperties.multiplierPhase = -1.8f;
+
+            patternPreset = new PatternPreset(PatternPreset.PresetName.SPIRAL, polarProperties, Content, GraphicsDevice, origin, 80);
             patternGenerator = new PatternGenerator(patternPreset);
 
             base.Initialize();

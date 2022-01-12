@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,8 +9,19 @@ namespace PlasmaPurgatory.Generator
 {
     class PatternPreset
     {
+        public struct PolarProperties
+        {
+            public float startMagnitude;
+            public float startPhase;
+            public float incrementMagnitude;
+            public float incrementPhase;
+            public float multiplierMagnitude;
+            public float multiplierPhase;
+        }
+
         public enum PresetName
         {
+            SPIRAL,
             MANDELBROT_SPIRAL,
             MANDELBROT_STAR,
             MANDELBROT_DUAL_SPIRAL,
@@ -19,10 +31,11 @@ namespace PlasmaPurgatory.Generator
         private GraphicsDevice graphicsDevice;
         private List<Bullet> bullets;
         private Vector2 origin;
-        private System.Numerics.Complex mandelbrotComplex;
+        private int bulletCount;
+        private PolarProperties polarProperties;
         private PresetName presetName;
 
-        private int bulletCount;
+        private System.Numerics.Complex mandelbrotComplex;
         private float paddingMultiplier;
 
         public List<Bullet> Bullets
@@ -44,10 +57,28 @@ namespace PlasmaPurgatory.Generator
             FillPresetData();
         }
 
+        public PatternPreset(PresetName presetName, PolarProperties polarProperties, ContentManager contentManager,
+                             GraphicsDevice graphicsDevice, Vector2 origin, int bulletCount)
+        {
+            this.presetName = presetName;
+            this.polarProperties = polarProperties;
+            this.contentManager = contentManager;
+            this.graphicsDevice = graphicsDevice;
+            this.origin = origin;
+            this.bulletCount = bulletCount;
+
+            bullets = new List<Bullet>();
+            FillPresetData();
+        }
+
         public void ApplyPattern()
         {
             switch (presetName)
             {
+                case PresetName.SPIRAL:
+                    SpiralCalculaton();
+                    break;
+
                 case PresetName.MANDELBROT_SPIRAL:
                 case PresetName.MANDELBROT_STAR:
                 case PresetName.MANDELBROT_DUAL_SPIRAL:
@@ -62,6 +93,9 @@ namespace PlasmaPurgatory.Generator
         {
             switch (presetName)
             {
+                case PresetName.SPIRAL:
+                    break;
+
                 // Enforce some values to avoid an unexpected crash in all Mandelbrot pattern
                 case PresetName.MANDELBROT_SPIRAL:
                     bulletCount = 80;
@@ -87,6 +121,31 @@ namespace PlasmaPurgatory.Generator
                 default:
                     break;
             }
+        }
+
+        private void SpiralCalculaton()
+        {
+            MathsUtils.Polar polar = new MathsUtils.Polar();
+            polar.magnitude = polarProperties.startMagnitude;
+            polar.phase = polarProperties.startPhase;
+
+            Vector2 bulletOrigin = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
+            bullets.Add(new Bullet(contentManager, graphicsDevice, CenterSpiralPoint(bulletOrigin)));
+
+            for (int i = 1; i < bulletCount; i++)
+            {
+                polar.magnitude += polarProperties.incrementMagnitude * polarProperties.multiplierMagnitude;
+                polar.phase += polarProperties.incrementPhase * polarProperties.multiplierPhase;
+
+                Vector2 point = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
+                Debug.WriteLine(CenterSpiralPoint(point).ToString());
+                bullets.Add(new Bullet(contentManager, graphicsDevice, CenterSpiralPoint(point)));
+            }
+        }
+
+        private Vector2 CenterSpiralPoint(Vector2 point)
+        {
+            return point + origin;
         }
 
         private void MandelbrotPointsCalculation()
