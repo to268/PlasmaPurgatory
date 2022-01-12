@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using MenuBuddy;
 
 namespace PlasmaPurgatory
 {
@@ -43,13 +44,12 @@ namespace PlasmaPurgatory
         {
             // Start button properties
            
-            buttons[0].position = new Vector2(graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height/3);
-            buttons[0].position = buttons[0].position;
+           /* buttons[0].position = new Vector2(graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height/3);
             buttons[0].color = Color.White;
             
 
             buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height /2);
-            buttons[1].color = Color.White;
+            buttons[1].color = Color.White;*/
             
             
             
@@ -59,12 +59,12 @@ namespace PlasmaPurgatory
         {
             spriteBatch = new SpriteBatch(graphicsDevice);
 
-            // Start button texture loading
-            buttons[0].texture = contentManager.Load<Texture2D>("PlayButton");
+            /* Start button texture loading
+            buttons[0].texture = contentManager.Load<Texture2D>("PlayButtonRS");
             buttons[0].origin = new Vector2(buttons[0].texture.Width / 2, buttons[0].texture.Height / 2);
 
             buttons[1].texture = contentManager.Load<Texture2D>("LargeButtons\\LargeButtons\\OptionsButton");
-            buttons[1].origin = new Vector2(buttons[1].texture.Width / 2, buttons[1].texture.Height / 2);
+            buttons[1].origin = new Vector2(buttons[1].texture.Width / 2, buttons[1].texture.Height / 2);*/
         }
 
         bool EnterButton(Button button)
@@ -100,10 +100,11 @@ namespace PlasmaPurgatory
             
             for (int i = 0; i < BUTTONS_COUNT; i++)
             {
-                buttons[i].hitbox = new Rectangle((int)buttons[i].position.X, (int)buttons[i].position.Y,
-                                              buttons[i].texture.Width, buttons[i].texture.Height);
-                spriteBatch.Draw(buttons[i].texture, buttons[i].position, buttons[i].hitbox, buttons[i].color,
+                /*buttons[i].hitbox = new Rectangle((int)buttons[i].position.X, (int)buttons[i].position.Y,
+                                              buttons[i].texture.Width, buttons[i].texture.Height);*/
+                spriteBatch.Draw(buttons[i].texture, buttons[i].position, null, buttons[i].color,
                                  0, buttons[i].origin, scale, SpriteEffects.None, 0f);
+                
             }
 
             spriteBatch.End();
