@@ -16,14 +16,14 @@ namespace PlasmaPurgatory
         protected AnimationState animationState;
         protected SpriteSheet animationSheet;
         protected Texture2D texture;
-        protected SpriteBatch spriteBatch; 
+        protected SpriteBatch spriteBatch;
 
         protected Vector2 position;
         protected Vector2 movement;
         protected int health;
 
 
-        protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice)
+        protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {
             if (postion.X > graphicsDevice.Viewport.Width - texture.Width)
             {
@@ -47,5 +47,14 @@ namespace PlasmaPurgatory
             }
             return true;
         } 
+
+        protected bool CheckCollision(Rectangle rectangle1, Rectangle rectangle2)
+        {
+            if (rectangle1.Intersects(rectangle2))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

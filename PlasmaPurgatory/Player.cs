@@ -2,17 +2,16 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Serialization;
-using MonoGame.Extended.Sprites;
-using System;
-using System.Diagnostics;
 
 namespace PlasmaPurgatory
 {
+    public enum TypeCollision { None, Ennemis, Bullet, Player };
     class Player : EntitiesUtils
     {
         private KeyboardState keyboardState;
+        private Rectangle recPlayer;
+        private TypeCollision collision;
+        private int pointVie = 3;
         private const float SPEED = 10;
 
         public Player(ContentManager contentManager, GraphicsDevice graphicsDevice)
@@ -24,6 +23,7 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             position = new Vector2(0, 0);
+            recPlayer = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
 
@@ -69,11 +69,19 @@ namespace PlasmaPurgatory
 
                 movement = new Vector2(0, 0);
             }
-            if (CheckBound(position, graphicsDevice))
+
+            if (CheckBound(position, graphicsDevice, texture))
             {
                 position += movement;
             }
 
+            recPlayer.X = (int)position.X;
+            recPlayer.Y = (int)position.Y;
+
+            //if (CheckCollision(recPlayer, recEnnemy) && keyboardState.IsKeyDown(Keys.Space))
+            //{
+
+            //}
 
 
 
@@ -97,7 +105,7 @@ namespace PlasmaPurgatory
             spriteBatch.End();
         }
 
-        
+
 
     }
 

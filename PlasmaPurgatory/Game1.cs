@@ -40,7 +40,6 @@ namespace PlasmaPurgatory
                 Exit();
 
             // TODO: Add your update logic here
-            System.Console.WriteLine("Game1");
             player.Update(gameTime);
             base.Update(gameTime);
         }
