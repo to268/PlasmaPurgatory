@@ -7,28 +7,27 @@ namespace PlasmaPurgatory
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
-        private Menu menu;
+        private SceneManager sceneManager;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
         }
 
         protected override void Initialize()
         {
             // Load SubClasses
-            menu = new Menu(GraphicsDevice, Content);
+            sceneManager = new SceneManager(Content, GraphicsDevice);
 
-            menu.Initialize();
+            sceneManager.Initialize();
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            menu.LoadContent();
+            sceneManager.LoadContent();
             base.LoadContent();
         }
 
@@ -37,7 +36,7 @@ namespace PlasmaPurgatory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            menu.Update(gameTime);
+            sceneManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -45,7 +44,7 @@ namespace PlasmaPurgatory
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            menu.Draw(gameTime);
+            sceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

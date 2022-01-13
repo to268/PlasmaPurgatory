@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using System.Threading;
 
 namespace PlasmaPurgatory
 {
@@ -18,22 +19,24 @@ namespace PlasmaPurgatory
             public Color color;
             public Vector2 origin;
             public Rectangle hitbox;
-            public Action callback;
         }
         
         public const float scale = .3f;
+        private const int BUTTONS_COUNT = 2;
+        
         private Button[] buttons;
         private GraphicsDevice graphicsDevice;
         private SpriteBatch spriteBatch;
         private ContentManager contentManager;
+        private SceneManager sceneManager;
         private MouseState mouseState;
         private Point mousePosition;
-        private const int BUTTONS_COUNT = 2;
 
-        public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager)
+        public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
+            this.sceneManager = sceneManager;
 
             buttons = new Button[BUTTONS_COUNT];
             PopulateButtonArray();
@@ -75,8 +78,13 @@ namespace PlasmaPurgatory
                 if (mouseState.LeftButton == ButtonState.Pressed && buttons[i].hitbox.Contains(mousePosition))
                 {
                     buttons[i].currentTexture = buttons[i].hoverTexture;
-                    // TODO: Call the callback function
-                    Debug.WriteLine(buttons[i].normalTexture.Width + " " + buttons[i].normalTexture.Height);
+                    if (i == 0)
+                    {
+                        Debug.WriteLine("1");
+                        Draw(gameTime);
+                        Debug.WriteLine("2");
+                        sceneManager.ChangeScene(SceneManager.SceneType.LEVEL);
+                    }
                 }
             }
         }
@@ -93,7 +101,7 @@ namespace PlasmaPurgatory
                 spriteBatch.Draw(buttons[i].currentTexture, buttons[i].position, null, buttons[i].color,
                                  0, buttons[i].origin, scale, SpriteEffects.None, 0f);
             }
-
+            Debug.WriteLine("Draw");
             spriteBatch.End();
         }
 
