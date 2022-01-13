@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PlasmaPurgatory
 {
-    class Enemy : PlayerUtils
+    class Enemy : EntitiesUtils
     {
     }
 }
