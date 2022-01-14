@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PlasmaPurgatory.Generator;
 
@@ -22,11 +21,10 @@ namespace PlasmaPurgatory
         protected override void Initialize()
         {
             //menu = new Menu(graphics, spriteBatch);
-
-            Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height / 2f);
 
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
-            polarProperties.startMagnitude = 4f;
+            polarProperties.startMagnitude = 40f;
             polarProperties.startPhase = 0;
             polarProperties.incrementMagnitude = 2f;
             polarProperties.incrementPhase = MathsUtils.DegresToRadians(15f);

@@ -1,6 +1,6 @@
 ﻿using Xunit;
 using System;
-using PlasmaPurgatory;
+using PlasmaPurgatory.Generator;
 using Microsoft.Xna.Framework;
 
 namespace Tests
@@ -72,14 +72,6 @@ namespace Tests
         {
             float radians = MathsUtils.DegresToRadians(degres);
             Assert.Equal(MathF.PI / 2, radians);
-        }
-
-        [Theory]
-        [InlineData(-MathF.PI / 2)]
-        public void RadiansToDegresTest(float radians)
-        {
-            float degres = MathsUtils.RadiansToDegres(radians);
-            Assert.Equal(-90, degres);
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace PlasmaPurgatory
+namespace PlasmaPurgatory.Generator
 {
     public static class MathsUtils
     {
-        // TODO: Do i need to create a class for that ?
+        // TODO: Add VectorToPolar and PolarToVector conversions
         // (r, phi)
         public struct Polar
         {
