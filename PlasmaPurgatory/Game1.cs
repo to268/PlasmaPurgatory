@@ -7,6 +7,7 @@ namespace PlasmaPurgatory
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
+        private SceneManager sceneManager;
         /*private Menu menu;
         private PatternGenerator patternGenerator;
         private PatternPreset patternPreset;*/
@@ -31,6 +32,8 @@ namespace PlasmaPurgatory
             graphics.PreferredBackBufferHeight = 900;
             graphics.ApplyChanges();
             
+            sceneManager = new SceneManager(Content, GraphicsDevice);
+            
             /*Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height / 2f);
 
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
@@ -48,6 +51,7 @@ namespace PlasmaPurgatory
             patternPreset = new PatternPreset(PatternPreset.PresetName.SPIRAL, polarProperties, bulletProperties, Content, GraphicsDevice, origin, 80);
             patternGenerator = new PatternGenerator(patternPreset);*/
             
+            sceneManager.Initialize();
             base.Initialize();
         }
 
@@ -56,6 +60,9 @@ namespace PlasmaPurgatory
             //menu.LoadContent();
             //player.LoadContent();
             //patternGenerator.LoadContent();
+            
+            sceneManager.LoadContent();
+            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -65,6 +72,8 @@ namespace PlasmaPurgatory
 
             //player.Update(gameTime);
             //patternGenerator.Update(gameTime);
+            
+            sceneManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -74,6 +83,8 @@ namespace PlasmaPurgatory
 
             //player.Draw(gameTime);
             //patternGenerator.Draw(gameTime);
+            
+            sceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }
     }
