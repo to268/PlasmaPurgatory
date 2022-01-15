@@ -1,11 +1,11 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
+using System.Numerics;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace PlasmaPurgatory.Generator
 {
     public static class MathsUtils
     {
-        // TODO: Add VectorToPolar and PolarToVector conversions
         // (r, phi)
         public struct Polar
         {
@@ -13,18 +13,17 @@ namespace PlasmaPurgatory.Generator
             public float phase;
         }
 
-        public static Vector2 ComplexToVector(System.Numerics.Complex complex)
+        public static Vector2 ComplexToVector(Complex complex)
         {
             return new Vector2((float)complex.Real, (float)complex.Imaginary);
         }
 
-        // TODO: Maybe remove it
-        public static System.Numerics.Complex VectorToComplex(Vector2 vector)
+        public static Complex VectorToComplex(Vector2 vector)
         {
-            return new System.Numerics.Complex(vector.X, vector.Y);
+            return new Complex(vector.X, vector.Y);
         }
 
-        public static Polar ComplexToPolar(System.Numerics.Complex complex)
+        public static Polar ComplexToPolar(Complex complex)
         {
             Polar polar = new Polar();
 
@@ -46,7 +45,7 @@ namespace PlasmaPurgatory.Generator
             return polar;
         }
 
-        public static System.Numerics.Complex PolarToComplex(Polar polar)
+        public static Complex PolarToComplex(Polar polar)
         {
             /*
              * x = r cos φ
@@ -55,7 +54,7 @@ namespace PlasmaPurgatory.Generator
             float x = polar.magnitude * MathF.Cos(polar.phase);
             float y = polar.magnitude * MathF.Sin(polar.phase);
 
-            return new System.Numerics.Complex(x, y);
+            return new Complex(x, y);
         }
 
         public static float DegresToRadians(float degres)
@@ -66,6 +65,18 @@ namespace PlasmaPurgatory.Generator
         public static float RadiansToDegres(float radians)
         {
             return radians * (180 / MathF.PI);
+        }
+        
+        public static Polar VectorToPolar(Vector2 vector)
+        {
+            Complex complex = VectorToComplex(vector);
+            return ComplexToPolar(complex);
+        }
+        
+        public static Vector2 PolarToVector(Polar polar)
+        {
+            Complex complex = PolarToComplex(polar);
+            return ComplexToVector(complex);
         }
     }
 }

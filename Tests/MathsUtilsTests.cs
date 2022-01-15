@@ -73,5 +73,31 @@ namespace Tests
             float radians = MathsUtils.DegresToRadians(degres);
             Assert.Equal(MathF.PI / 2, radians);
         }
+        
+        
+        [Theory]
+        [InlineData(14, 43)]
+        public void VectorToPolarTest(float x, float y)
+        {
+            Vector2 vector = new Vector2(x, y);
+            MathsUtils.Polar res = MathsUtils.VectorToPolar(vector);
+
+            Assert.Equal(45.22f, MathF.Round(res.magnitude, 2));
+            Assert.Equal(71.97f, MathF.Round(MathsUtils.RadiansToDegres(res.phase), 2));
+        }
+
+        [Theory]
+        [InlineData(45, 0.52f)]
+        public void PolarToVectorTest(float magnitude, float phase)
+        {
+            MathsUtils.Polar polar = new MathsUtils.Polar();
+            polar.magnitude = magnitude;
+            polar.phase = phase;
+
+            Vector2 res = MathsUtils.PolarToVector(polar);
+
+            Assert.Equal(39.05f, MathF.Round(res.X, 2));
+            Assert.Equal(22.36f, MathF.Round(res.Y, 2));
+        }
     }
 }

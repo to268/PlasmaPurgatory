@@ -22,10 +22,16 @@ namespace PlasmaPurgatory.Generator
         {
             SPIRAL,
             CIRCLE,
+            SHOTGUN,
             MANDELBROT_SPIRAL,
             MANDELBROT_STAR,
             MANDELBROT_DUAL_SPIRAL,
         }
+        
+        private readonly float LEFT_ANGLE = MathsUtils.DegresToRadians(105f);
+        private readonly float MIDDLE_ANGLE = MathsUtils.DegresToRadians(90f);
+        private readonly float RIGHT_ANGLE = MathsUtils.DegresToRadians(75f);
+        private const int SHOTGUN_DIRECTIONS = 3;
 
         private ContentManager contentManager;
         private GraphicsDevice graphicsDevice;
@@ -34,6 +40,7 @@ namespace PlasmaPurgatory.Generator
         private int bulletCount;
         private PolarProperties polarProperties;
         private PresetName presetName;
+        private Bullet.BulletProperties bulletProperties;
 
         private System.Numerics.Complex mandelbrotComplex;
         private float paddingMultiplier;
@@ -44,10 +51,12 @@ namespace PlasmaPurgatory.Generator
             set { bullets = value; }
         }
 
-        public PatternPreset(PresetName presetName, ContentManager contentManager,
-                             GraphicsDevice graphicsDevice, Vector2 origin, int bulletCount)
+        public PatternPreset(PresetName presetName, Bullet.BulletProperties bulletProperties,
+                             ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, 
+                             int bulletCount)
         {
             this.presetName = presetName;
+            this.bulletProperties = bulletProperties;
             this.contentManager = contentManager;
             this.graphicsDevice = graphicsDevice;
             this.origin = origin;
@@ -57,11 +66,14 @@ namespace PlasmaPurgatory.Generator
             FillMandelbrotPresetData();
         }
 
-        public PatternPreset(PresetName presetName, PolarProperties polarProperties, ContentManager contentManager,
-                             GraphicsDevice graphicsDevice, Vector2 origin, int bulletCount)
+        public PatternPreset(PresetName presetName, PolarProperties polarProperties, 
+                             Bullet.BulletProperties bulletProperties, ContentManager contentManager,
+                             GraphicsDevice graphicsDevice, Vector2 origin, 
+                             int bulletCount)
         {
             this.presetName = presetName;
             this.polarProperties = polarProperties;
+            this.bulletProperties = bulletProperties;
             this.contentManager = contentManager;
             this.graphicsDevice = graphicsDevice;
             this.origin = origin;
@@ -81,6 +93,10 @@ namespace PlasmaPurgatory.Generator
                 case PresetName.CIRCLE:
                     CircleCalculation();
                     break;
+                
+                case PresetName.SHOTGUN:
+                    ShotgunCalculation();
+                    break;
 
                 case PresetName.MANDELBROT_SPIRAL:
                 case PresetName.MANDELBROT_STAR:
@@ -89,7 +105,7 @@ namespace PlasmaPurgatory.Generator
                     break;
                 
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown pattern preset");
+                    throw new ArgumentOutOfRangeException($"Unknown pattern preset");
             }
         }
 
@@ -120,7 +136,7 @@ namespace PlasmaPurgatory.Generator
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown mandelbrot pattern preset");
+                    throw new ArgumentOutOfRangeException($"Unknown mandelbrot pattern preset");
             }
         }
 
@@ -130,16 +146,18 @@ namespace PlasmaPurgatory.Generator
             polar.magnitude = polarProperties.startMagnitude;
             polar.phase = polarProperties.startPhase;
 
-            Vector2 bulletOrigin = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
-            bullets.Add(new Bullet(contentManager, graphicsDevice, origin, CenterPolarPoint(bulletOrigin)));
+            Vector2 bulletOrigin = MathsUtils.PolarToVector(polar);
+            bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                            CenterPolarPoint(bulletOrigin), bulletProperties));
 
             for (int i = 1; i < bulletCount; i++)
             {
                 polar.magnitude += polarProperties.incrementMagnitude * polarProperties.multiplierMagnitude;
                 polar.phase += polarProperties.incrementPhase * polarProperties.multiplierPhase;
 
-                Vector2 point = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
-                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, CenterPolarPoint(point)));
+                Vector2 point = MathsUtils.PolarToVector(polar);
+                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                                CenterPolarPoint(point), bulletProperties));
             }
         }
 
@@ -151,15 +169,49 @@ namespace PlasmaPurgatory.Generator
             
             float phasePerBullet = MathsUtils.DegresToRadians(360f / bulletCount);
             
-            Vector2 bulletOrigin = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
-            bullets.Add(new Bullet(contentManager, graphicsDevice, origin, CenterPolarPoint(bulletOrigin)));
+            Vector2 bulletOrigin = MathsUtils.PolarToVector(polar);
+            bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                            CenterPolarPoint(bulletOrigin), bulletProperties));
 
             for (int i = 1; i < bulletCount; i++)
             {
                 polar.phase += phasePerBullet;
 
-                Vector2 point = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
-                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, CenterPolarPoint(point)));
+                Vector2 point = MathsUtils.PolarToVector(polar);
+                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                                CenterPolarPoint(point), bulletProperties));
+            }
+        }
+
+        private void ShotgunCalculation()
+        {
+            MathsUtils.Polar polar = new MathsUtils.Polar();
+            polar.magnitude = polarProperties.startMagnitude;
+            
+            int bulletsPerDirection = bulletCount / SHOTGUN_DIRECTIONS;
+            float leftAngle = LEFT_ANGLE + polarProperties.startPhase;
+            float middleAngle = MIDDLE_ANGLE + polarProperties.startPhase;
+            float rightAngle = RIGHT_ANGLE + polarProperties.startPhase;
+
+            for (int i = 0; i < bulletsPerDirection; i++)
+            {
+                polar.phase = leftAngle;
+                Vector2 point = MathsUtils.PolarToVector(polar);
+                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                                CenterPolarPoint(point), bulletProperties));
+                
+                polar.phase = middleAngle;
+                point = MathsUtils.PolarToVector(polar);
+                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                                CenterPolarPoint(point), bulletProperties));
+                
+                polar.phase = rightAngle;
+                point = MathsUtils.PolarToVector(polar);
+                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                                CenterPolarPoint(point), bulletProperties));
+
+                polar.magnitude += polarProperties.incrementMagnitude;
+                polar.phase += polarProperties.incrementPhase;
             }
         }
 
@@ -177,7 +229,8 @@ namespace PlasmaPurgatory.Generator
                 z = System.Numerics.Complex.Pow(z, 2) + mandelbrotComplex;
 
                 Vector2 point = MathsUtils.ComplexToVector(z);
-                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, MandelbrotCenterPoint(point)));
+                bullets.Add(new Bullet(contentManager, graphicsDevice, origin, 
+                                MandelbrotCenterPoint(point), bulletProperties));
             }
         }
 
@@ -203,7 +256,7 @@ namespace PlasmaPurgatory.Generator
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException("The preset name is not a Mandelbrot generated pattern");
+                    throw new ArgumentOutOfRangeException($"The preset name is not a Mandelbrot generated pattern");
             }
 
             float resX = origin.X + (target.X * (bulletCount * paddingMultiplier)) + padding.X;

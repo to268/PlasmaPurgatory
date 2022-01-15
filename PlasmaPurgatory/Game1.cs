@@ -7,9 +7,9 @@ namespace PlasmaPurgatory
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
-        private Menu menu;
+        /*private Menu menu;
         private PatternGenerator patternGenerator;
-        private PatternPreset patternPreset;
+        private PatternPreset patternPreset;*/
 
         public Game1()
         {
@@ -20,8 +20,14 @@ namespace PlasmaPurgatory
 
         protected override void Initialize()
         {
+            // Change Window size
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferWidth = 600;
+            graphics.PreferredBackBufferHeight = 900;
+            graphics.ApplyChanges();
+            
             //menu = new Menu(graphics, spriteBatch);
-            Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height / 2f);
+            /*Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height / 2f);
 
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
@@ -30,17 +36,21 @@ namespace PlasmaPurgatory
             polarProperties.incrementPhase = MathsUtils.DegresToRadians(15f);
             polarProperties.multiplierMagnitude = 1;
             polarProperties.multiplierPhase = -1.8f;
+            
+            Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
+            bulletProperties.movementSpeed = 0.12f;
+            bulletProperties.rotationSpeed = MathsUtils.DegresToRadians(0.14f);
 
-            patternPreset = new PatternPreset(PatternPreset.PresetName.SPIRAL, polarProperties, Content, GraphicsDevice, origin, 80);
-            patternGenerator = new PatternGenerator(patternPreset);
-
+            patternPreset = new PatternPreset(PatternPreset.PresetName.SPIRAL, polarProperties, bulletProperties, Content, GraphicsDevice, origin, 80);
+            patternGenerator = new PatternGenerator(patternPreset);*/
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             //menu.LoadContent();
-            patternGenerator.LoadContent();
+            //patternGenerator.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -48,7 +58,7 @@ namespace PlasmaPurgatory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            patternGenerator.Update(gameTime);
+            //patternGenerator.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -56,7 +66,7 @@ namespace PlasmaPurgatory
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            patternGenerator.Draw(gameTime);
+            //patternGenerator.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

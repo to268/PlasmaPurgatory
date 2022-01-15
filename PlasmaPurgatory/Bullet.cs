@@ -8,6 +8,12 @@ namespace PlasmaPurgatory
 {
     public class Bullet {
         public enum BulletType { BREAKABLE, UNBREAKABLE };
+        
+        public struct BulletProperties
+        {
+            public float movementSpeed;
+            public float rotationSpeed;
+        }
 
         private ContentManager contentManager;
         private GraphicsDevice graphicsDevice;
@@ -26,22 +32,9 @@ namespace PlasmaPurgatory
         private int bulletProbability;
         
         // TODO: Remove unused fields
-        public float MovementSpeed
-        {
-             get { return movementSpeed; }
-             set { movementSpeed = value; CalculateMovementVector(); }
-        }
-        
-        public float RotationSpeed
-        {
-             get { return rotationSpeed; }
-             set { rotationSpeed = value; }
-        }
-
         public BulletType Type
         {
             get { return type; }
-            set { type = value; }
         }
 
         public int BulletProbability
@@ -50,7 +43,8 @@ namespace PlasmaPurgatory
             set { bulletProbability = value; }
         }
 
-        public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, Vector2 targetPosition)
+        public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, Vector2 targetPosition, 
+                      BulletProperties bulletProperties)
         {
             color = Color.White;
             this.contentManager = contentManager;
@@ -61,10 +55,10 @@ namespace PlasmaPurgatory
             isBulletDead = false;
             position = origin;
             
-            // Default values
-            MovementSpeed = 0.12f;
-            RotationSpeed = MathsUtils.DegresToRadians(0.14f);
+            movementSpeed = bulletProperties.movementSpeed;
+            rotationSpeed = bulletProperties.rotationSpeed;
             bulletProbability = 2;
+            CalculateMovementVector();
 
             type = RandomBulletType();
         }
@@ -113,12 +107,12 @@ namespace PlasmaPurgatory
         // TODO: Find a way to fix the pattern to shrink for no obvious reasons
         private void RotateBullet()
         {
-            MathsUtils.Polar polar = MathsUtils.ComplexToPolar(MathsUtils.VectorToComplex(position - origin));
+            MathsUtils.Polar polar = MathsUtils.VectorToPolar(position - origin);
             float res = polar.phase + rotationSpeed;
 
             polar.phase = res;
             
-            position = MathsUtils.ComplexToVector(MathsUtils.PolarToComplex(polar));
+            position = MathsUtils.PolarToVector(polar);
             position += origin;
         }
 
