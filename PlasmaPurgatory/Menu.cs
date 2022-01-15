@@ -31,6 +31,7 @@ namespace PlasmaPurgatory
         private SceneManager sceneManager;
         private MouseState mouseState;
         private Point mousePosition;
+        private Texture2D titleTexture;
 
         public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
         {
@@ -56,7 +57,9 @@ namespace PlasmaPurgatory
         public void LoadContent()
         {
             spriteBatch = new SpriteBatch(graphicsDevice);
-
+            
+            titleTexture = contentManager.Load<Texture2D>("TitleScreen");
+            
             buttons[0].normalTexture = contentManager.Load<Texture2D>("LargeButtons\\LargeButtons\\PlayButton");
             buttons[0].hoverTexture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Playcol_Button");
             buttons[0].origin = new Vector2(buttons[0].normalTexture.Width / 2, buttons[0].normalTexture.Height / 2);
@@ -92,11 +95,12 @@ namespace PlasmaPurgatory
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            
             for (int i = 0; i < BUTTONS_COUNT; i++)
             {
-                buttons[i].hitbox = new Rectangle((int)buttons[i].position.X - 90, (int)buttons[i].position.Y - 80,
-                                                  (int)(buttons[i].normalTexture.Width / 3.2f), (buttons[i].normalTexture.Height / 2) + i * 20);
+                spriteBatch.Draw(titleTexture, new Vector2(0,0), Color.White);
+                buttons[i].hitbox = new Rectangle((int)buttons[i].position.X - 90, (int)buttons[i].position.Y - 40,
+                                                  (int)(buttons[i].normalTexture.Width / 3.2f),
+                                                  (int)(buttons[i].normalTexture.Height / 2.8f) + i * 10);
 
                 spriteBatch.Draw(buttons[i].currentTexture, buttons[i].position, null, buttons[i].color,
                                  0, buttons[i].origin, scale, SpriteEffects.None, 0f);
