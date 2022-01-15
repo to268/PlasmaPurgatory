@@ -1,49 +1,130 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
+using PlasmaPurgatory.Generator;
 
 namespace PlasmaPurgatory
 {
-    class Bullet : Game
-    {
-        private Vector2 postion;
+    public class Bullet {
+        public enum BulletType { BREAKABLE, UNBREAKABLE };
+        
+        public struct BulletProperties
+        {
+            public float movementSpeed;
+            public float rotationSpeed;
+        }
+
+        private ContentManager contentManager;
+        private GraphicsDevice graphicsDevice;
+        private SpriteBatch spriteBatch;
+        private Vector2 origin;
+        private Vector2 position;
+        private Vector2 targetPosition;
+        private Vector2 movementVector;
         private Texture2D texture;
-
-        public Vector2 position
+        private Color color;
+        private BulletType type; 
+        
+        private float movementSpeed;
+        private float rotationSpeed;
+        private bool isBulletDead;
+        private int bulletProbability;
+        
+        // TODO: Remove unused fields
+        public BulletType Type
         {
-            get { return postion; }
-            set { postion = value; }
+            get { return type; }
         }
 
-        public Bullet(Vector2 initialPosition)
+        public int BulletProbability
         {
-            position = initialPosition;
+            get { return bulletProbability; }
+            set { bulletProbability = value; }
         }
 
-        protected override void Initialize()
+        public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, Vector2 targetPosition, 
+                      BulletProperties bulletProperties)
         {
-            base.Initialize();
+            color = Color.White;
+            this.contentManager = contentManager;
+            this.graphicsDevice = graphicsDevice;
+            this.targetPosition = targetPosition;
+            this.origin = origin;
+            
+            isBulletDead = false;
+            position = origin;
+            
+            movementSpeed = bulletProperties.movementSpeed;
+            rotationSpeed = bulletProperties.rotationSpeed;
+            bulletProbability = 2;
+            CalculateMovementVector();
+
+            type = RandomBulletType();
         }
 
-        protected override void LoadContent()
+        public void Initialize()
         {
-            //texture = Content.Load <Texture2D>("path");
-            base.LoadContent();
         }
 
-
-        protected override void Update(GameTime gameTime)
+        public void LoadContent()
         {
-            base.Update(gameTime);
+            spriteBatch = new SpriteBatch(graphicsDevice);
+            texture = contentManager.Load <Texture2D>("bullet");
         }
 
-        protected override void Draw(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            base.Draw(gameTime);
+            MoveBullet();
+            RotateBullet();
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            if (isBulletDead)
+                return;
+            
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, position, color);
+            spriteBatch.End();
+        }
+
+        private void CalculateMovementVector()
+        {
+            movementVector = (targetPosition - origin) * movementSpeed;
+        }
+
+        private void MoveBullet()
+        {
+            if ((position.X + texture.Width) < 0 || position.X > graphicsDevice.Viewport.Width &&
+                position.Y < 0 || position.Y > graphicsDevice.Viewport.Height)
+                isBulletDead = true;
+            
+            if (!isBulletDead)
+                position += movementVector * movementSpeed;
+        }
+
+        // TODO: Find a way to fix the pattern to shrink for no obvious reasons
+        private void RotateBullet()
+        {
+            MathsUtils.Polar polar = MathsUtils.VectorToPolar(position - origin);
+            float res = polar.phase + rotationSpeed;
+
+            polar.phase = res;
+            
+            position = MathsUtils.PolarToVector(polar);
+            position += origin;
+        }
+
+        private BulletType RandomBulletType()
+        {
+            Random random = new Random();
+            if (random.Next(0, bulletProbability) == 0)
+            {
+                return BulletType.BREAKABLE;
+            }
+
+            return BulletType.UNBREAKABLE;
         }
     }
 }

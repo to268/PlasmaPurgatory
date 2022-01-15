@@ -21,4 +21,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PlasmaPurgatory\PlasmaPurgatory.csproj" />
+  </ItemGroup>
+
 </Project>

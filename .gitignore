@@ -54,6 +54,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+*.sln.iml
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -387,9 +388,9 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-# JetBrains Rider
-*.sln.iml
-
 # Monogame
 PlasmaPurgatory/Content/bin*
 PlasmaPurgatory/Content/obj*
+
+# JetBrains Rider
+.idea
