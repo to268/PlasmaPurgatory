@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
-using System.Threading;
 
 namespace PlasmaPurgatory
 {
@@ -46,11 +43,11 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             // Start button properties
-            buttons[0].position = new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 3);
+            buttons[0].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3f);
             buttons[0].color = Color.White;
 
 
-            buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height /2);
+            buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 2f);
             buttons[1].color = Color.White;
         }
 
@@ -62,12 +59,12 @@ namespace PlasmaPurgatory
             
             buttons[0].normalTexture = contentManager.Load<Texture2D>("LargeButtons\\LargeButtons\\PlayButton");
             buttons[0].hoverTexture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Playcol_Button");
-            buttons[0].origin = new Vector2(buttons[0].normalTexture.Width / 2, buttons[0].normalTexture.Height / 2);
+            buttons[0].origin = new Vector2(buttons[0].normalTexture.Width / 2f, buttons[0].normalTexture.Height / 2f);
             buttons[0].currentTexture = buttons[0].normalTexture;
 
             buttons[1].normalTexture = contentManager.Load<Texture2D>("LargeButtons\\LargeButtons\\OptionsButton");
             buttons[1].hoverTexture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Optionscol_Button");
-            buttons[1].origin = new Vector2(buttons[1].normalTexture.Width / 2, buttons[1].normalTexture.Height / 2);
+            buttons[1].origin = new Vector2(buttons[1].normalTexture.Width / 2f, buttons[1].normalTexture.Height / 2f);
             buttons[1].currentTexture = buttons[1].normalTexture;
         }
 
@@ -81,11 +78,12 @@ namespace PlasmaPurgatory
                 if (mouseState.LeftButton == ButtonState.Pressed && buttons[i].hitbox.Contains(mousePosition))
                 {
                     buttons[i].currentTexture = buttons[i].hoverTexture;
+                    
+                    // Play Button
                     if (i == 0)
                     {
-                        Debug.WriteLine("1");
+                        // TODO: Fix the bug where the hoverTexture is not displayed before changing scene
                         Draw(gameTime);
-                        Debug.WriteLine("2");
                         sceneManager.ChangeScene(SceneManager.SceneType.LEVEL);
                     }
                 }
@@ -95,9 +93,13 @@ namespace PlasmaPurgatory
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+            
+            // Background
+            spriteBatch.Draw(titleTexture, new Vector2(0,0), Color.White);
+            
+            // Buttons
             for (int i = 0; i < BUTTONS_COUNT; i++)
             {
-                spriteBatch.Draw(titleTexture, new Vector2(0,0), Color.White);
                 buttons[i].hitbox = new Rectangle((int)buttons[i].position.X - 90, (int)buttons[i].position.Y - 40,
                                                   (int)(buttons[i].normalTexture.Width / 3.2f),
                                                   (int)(buttons[i].normalTexture.Height / 2.8f) + i * 10);
@@ -105,7 +107,6 @@ namespace PlasmaPurgatory
                 spriteBatch.Draw(buttons[i].currentTexture, buttons[i].position, null, buttons[i].color,
                                  0, buttons[i].origin, scale, SpriteEffects.None, 0f);
             }
-            Debug.WriteLine("Draw");
             spriteBatch.End();
         }
 

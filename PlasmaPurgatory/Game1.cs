@@ -21,11 +21,6 @@ namespace PlasmaPurgatory
         {
             // Load SubClasses
             sceneManager = new SceneManager(Content, GraphicsDevice);
-            
-            graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 600;
-            graphics.PreferredBackBufferHeight = 900;
-            graphics.ApplyChanges();
 
             sceneManager.Initialize();
             base.Initialize();
