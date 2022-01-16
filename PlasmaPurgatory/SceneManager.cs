@@ -48,17 +48,21 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
-            UpdateCurrentScene(gameTime);
+            switch (currentScene)
+            {
+                case SceneType.MENU:
+                    menu.Update(gameTime);
+                    break;
+                case SceneType.LEVEL:
+                    level.Update(gameTime);
+                    break;
+                default:
+                    break;
+            }
             
         }
 
         public void Draw(GameTime gameTime)
-        {
-            graphicsDevice.Clear(Color.CornflowerBlue);
-            DrawCurrentScene(gameTime);
-        }
-
-        private void DrawCurrentScene(GameTime gameTime)
         {
             switch (currentScene)
             {
@@ -67,21 +71,6 @@ namespace PlasmaPurgatory
                     break;
                 case SceneType.LEVEL:
                     level.Draw(gameTime);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void UpdateCurrentScene(GameTime gameTime)
-        {
-            switch (currentScene)
-            {
-                case SceneType.MENU:
-                    menu.Update(gameTime);
-                    break;
-                case SceneType.LEVEL:
-                    level.Update(gameTime);
                     break;
                 default:
                     break;

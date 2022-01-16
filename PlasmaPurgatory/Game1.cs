@@ -77,8 +77,6 @@ namespace PlasmaPurgatory
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             //player.Draw(gameTime);
             //patternGenerator.Draw(gameTime);
             
