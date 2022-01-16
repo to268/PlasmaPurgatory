@@ -47,6 +47,7 @@ namespace PlasmaPurgatory
             Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
             bulletProperties.movementSpeed = 0.12f;
             bulletProperties.rotationSpeed = MathsUtils.DegresToRadians(0.14f);
+            bulletProperties.bulletProbability = 2;
 
             patternPreset = new PatternPreset(PatternPreset.PresetName.SPIRAL, polarProperties, bulletProperties, Content, GraphicsDevice, origin, 80);
             patternGenerator = new PatternGenerator(patternPreset);*/

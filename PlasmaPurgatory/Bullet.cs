@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,7 @@ namespace PlasmaPurgatory
         {
             public float movementSpeed;
             public float rotationSpeed;
+            public int bulletProbability;
         }
 
         private ContentManager contentManager;
@@ -22,7 +24,9 @@ namespace PlasmaPurgatory
         private Vector2 position;
         private Vector2 targetPosition;
         private Vector2 movementVector;
+        private Rectangle rectangle;
         private Texture2D texture;
+        private Effect colorShader;
         private Color color;
         private BulletType type; 
         
@@ -36,11 +40,10 @@ namespace PlasmaPurgatory
         {
             get { return type; }
         }
-
-        public int BulletProbability
+        
+        public Rectangle Rectangle
         {
-            get { return bulletProbability; }
-            set { bulletProbability = value; }
+            get { return rectangle; }
         }
 
         public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, Vector2 targetPosition, 
@@ -54,10 +57,9 @@ namespace PlasmaPurgatory
             
             isBulletDead = false;
             position = origin;
-            
             movementSpeed = bulletProperties.movementSpeed;
             rotationSpeed = bulletProperties.rotationSpeed;
-            bulletProbability = 2;
+            bulletProbability = bulletProperties.bulletProbability;
             CalculateMovementVector();
 
             type = RandomBulletType();
@@ -71,20 +73,30 @@ namespace PlasmaPurgatory
         {
             spriteBatch = new SpriteBatch(graphicsDevice);
             texture = contentManager.Load <Texture2D>("bullet");
+            
+            if (type == BulletType.BREAKABLE)
+                colorShader = contentManager.Load<Effect>("Shaders\\BreakableBulletShader");
+            else
+                colorShader = contentManager.Load<Effect>("Shaders\\UnbreakableBulletShader");
+            
+            rectangle = new Rectangle((int)origin.X, (int)origin.Y, (int)(texture.Width * 0.6f), (int)(texture.Height * 0.6f));
         }
 
         public void Update(GameTime gameTime)
         {
             MoveBullet();
             RotateBullet();
+
+            rectangle.X = (int)position.X;
+            rectangle.Y = (int)position.Y;
         }
 
         public void Draw(GameTime gameTime)
         {
             if (isBulletDead)
                 return;
-            
-            spriteBatch.Begin();
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, effect:colorShader);
             spriteBatch.Draw(texture, position, color);
             spriteBatch.End();
         }
