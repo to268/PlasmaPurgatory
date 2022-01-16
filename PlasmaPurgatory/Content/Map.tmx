@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="8" height="12" tilewidth="75" tileheight="75" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="../../../01/Tiles/CotéAlt.tsx"/>
+ <tileset firstgid="2" source="../../../01/Tiles/Pave.tsx"/>
+ <tileset firstgid="3" source="../../../01/Tiles/PaveAlt.tsx"/>
+ <tileset firstgid="4" source="../../../01/Tiles/Coté.tsx"/>
+ <tileset firstgid="5" source="../../../01/Tiles/CotéAltInv.tsx"/>
+ <tileset firstgid="6" source="../../../01/Tiles/CotéInv.tsx"/>
+ <layer id="1" name="Calque de Tuiles 1" width="8" height="12">
+  <data encoding="csv">
+5,2,2,2,2,3,2,1,
+5,2,2,2,3,2,2,1,
+6,2,2,2,2,2,2,1,
+5,2,3,2,2,2,3,4,
+5,2,2,2,2,2,2,1,
+6,2,2,2,2,2,2,1,
+5,2,2,3,2,2,2,4,
+5,3,2,2,2,2,2,1,
+5,2,2,2,2,3,2,1,
+5,2,2,2,2,2,3,1,
+5,2,3,2,2,3,2,4,
+6,2,2,2,2,2,2,1
+</data>
+ </layer>
+</map>

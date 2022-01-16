@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>E:/Users/UserPC/Documents/Thibault/IUT/SAE/PlasmaPurgatory/PlasmaPurgatory/Content/../../../01/Tiles/../tCotéAlt.png</SourceFile>
+  <SourceTime>2022-01-16T17:35:04.4161598+01:00</SourceTime>
+  <DestFile>E:/Users/UserPC/Documents/Thibault/IUT/SAE/PlasmaPurgatory/PlasmaPurgatory/Content/bin/DesktopGL/../../../01/tCotéAlt_0.xnb</DestFile>
+  <DestTime>2022-01-16T19:56:16.6447257+01:00</DestTime>
+  <Importer>TextureImporter</Importer>
+  <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
+  <Processor>TextureProcessor</Processor>
+  <ProcessorTime>2020-08-10T18:17:54+02:00</ProcessorTime>
+  <Parameters>
+    <Key>ColorKeyColor</Key>
+    <Value>0,0,0,0</Value>
+  </Parameters>
+  <Parameters>
+    <Key>ColorKeyEnabled</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

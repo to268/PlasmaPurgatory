@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>E:/Users/UserPC/Documents/Thibault/IUT/SAE/PlasmaPurgatory/PlasmaPurgatory/Content/../../../01/Tiles/Coté.tsx</SourceFile>
+  <SourceTime>2022-01-16T19:58:01.5950115+01:00</SourceTime>
+  <DestFile>E:/Users/UserPC/Documents/Thibault/IUT/SAE/PlasmaPurgatory/PlasmaPurgatory/Content/bin/DesktopGL/../../../01/Tiles/Coté_0.xnb</DestFile>
+  <DestTime>2022-01-16T20:01:55.1053626+01:00</DestTime>
+  <Importer>TiledMapTilesetImporter</Importer>
+  <ImporterTime>2020-08-29T17:17:30+02:00</ImporterTime>
+  <Processor>TiledMapTilesetProcessor</Processor>
+  <ProcessorTime>2020-08-29T17:17:30+02:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset>
+    <string>E:/Users/UserPC/Documents/Thibault/IUT/SAE/PlasmaPurgatory/PlasmaPurgatory/Content/bin/DesktopGL/tCoté_0.xnb</string>
+  </BuildAsset>
+  <BuildOutput />
+</PipelineBuildEvent>

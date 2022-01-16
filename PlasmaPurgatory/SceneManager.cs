@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PlasmaPurgatory
 {
-    class SceneManager
+    public class SceneManager
     {
         public enum SceneType
         {
@@ -18,6 +18,7 @@ namespace PlasmaPurgatory
         private ContentManager contentManager;
         private GraphicsDevice graphicsDevice;
         private Menu menu;
+        private Level level;
         private SceneType currentScene;
 
         public SceneManager(ContentManager contentManager, GraphicsDevice graphicsDevice)
@@ -32,14 +33,17 @@ namespace PlasmaPurgatory
         {
             // Load SubClasses
             menu = new Menu(graphicsDevice, contentManager, this);
+            level = new Level(graphicsDevice, contentManager, this);
 
 
             menu.Initialize();
+            level.Initialize();
         }
 
         public void LoadContent()
         {
             menu.LoadContent();
+            level.LoadContent();
         }
 
         public void Update(GameTime gameTime)
@@ -62,6 +66,7 @@ namespace PlasmaPurgatory
                     menu.Draw(gameTime);
                     break;
                 case SceneType.LEVEL:
+                    level.Draw(gameTime);
                     break;
                 default:
                     break;
