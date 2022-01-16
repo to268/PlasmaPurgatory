@@ -17,6 +17,7 @@ namespace PlasmaPurgatory
         protected SpriteSheet animationSheet;
         protected Texture2D texture;
         protected SpriteBatch spriteBatch;
+        protected Rectangle rectangle;
 
         protected Vector2 position;
         protected Vector2 movement;

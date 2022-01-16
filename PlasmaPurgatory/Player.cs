@@ -8,15 +8,13 @@ namespace PlasmaPurgatory
 
     class Player : EntitiesUtils
     {
-        public enum TypeCollision { NONE, ENNEMIS, BULLET, PLAYER };
+        public enum CollisionType { NONE, ENNEMIS, BULLET, PLAYER };
 
         private KeyboardState keyboardState;
-        private Rectangle recPlayer;
-        private TypeCollision collision;
-        private int currentHealth; 
+        private CollisionType collision;
 
         private const float SPEED = 10;
-        private const int MAX_HP = 3;
+        private const int MAX_PLAYER_HP = 3;
 
         public Player(ContentManager contentManager, GraphicsDevice graphicsDevice)
         {
@@ -27,9 +25,9 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             position = new Vector2(0, 0);
-            recPlayer = new Rectangle((int)position.X, (int)position.Y, 30, 30);
+            rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
-            currentHealth = MAX_HP;
+            health = MAX_PLAYER_HP;
         }
 
         public void LoadContent()
@@ -79,8 +77,8 @@ namespace PlasmaPurgatory
             if (CheckBound(position, graphicsDevice, texture))
                 position += movement;
 
-            recPlayer.X = (int)position.X;
-            recPlayer.Y = (int)position.Y;
+            rectangle.X = (int)position.X;
+            rectangle.Y = (int)position.Y;
 
             // TODO: Implement attack feature
             //if (CheckCollision(recPlayer, recEnnemy) && keyboardState.IsKeyDown(Keys.Space))
