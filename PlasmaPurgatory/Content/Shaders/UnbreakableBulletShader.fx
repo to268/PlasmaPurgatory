@@ -7,8 +7,6 @@
     #define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
-extern float4 baseColor;
-
 struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
