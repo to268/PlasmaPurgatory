@@ -13,9 +13,10 @@ namespace PlasmaPurgatory
         private KeyboardState keyboardState;
         private Rectangle recPlayer;
         private TypeCollision collision;
-        private int currentHealth; 
+        private int currentHealth;
+        private Vector2 originPlayer;
 
-        private const float SPEED = 10;
+        private const float SPEED = 6;
         private const int MAX_HP = 3;
 
         public Player(ContentManager contentManager, GraphicsDevice graphicsDevice)
@@ -26,10 +27,13 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
-            position = new Vector2(0, 0);
+            position = new Vector2(graphicsDevice.Viewport.Width/2, 600);
             recPlayer = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
+            
             currentHealth = MAX_HP;
+
+            movement = new Vector2(0,0);
         }
 
         public void LoadContent()
@@ -37,7 +41,8 @@ namespace PlasmaPurgatory
             // TODO: Add animations to the player
             //animationSheet = contentManager.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             //animatedSprite = new AnimatedSprite(animationSheet);
-            texture = contentManager.Load<Texture2D>("Player");
+            texture = contentManager.Load<Texture2D>("sGehenna");
+            originPlayer = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
         public void Update(GameTime gameTime)
@@ -49,25 +54,25 @@ namespace PlasmaPurgatory
             {
                 animationState = AnimationState.WALKNORTH;
 
-                movement = new Vector2(0, -1);
+                movement.Y = -1;
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
                 animationState = AnimationState.WALKSOUTH;
 
-                movement = new Vector2(0, 1);
+                movement.Y = 1;
             }
             else if (keyboardState.IsKeyDown(Keys.Left))
             {
                 animationState = AnimationState.WALKWEST;
 
-                movement = new Vector2(-1, 0);
+                movement.X = -1;
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 animationState = AnimationState.WALKEAST;
 
-                movement = new Vector2(1, 0);
+                movement.X = 1;
             }
             else
             {
@@ -77,7 +82,7 @@ namespace PlasmaPurgatory
             }
 
             if (CheckBound(position, graphicsDevice, texture))
-                position += movement;
+                position += movement * SPEED;
 
             recPlayer.X = (int)position.X;
             recPlayer.Y = (int)position.Y;
@@ -92,7 +97,7 @@ namespace PlasmaPurgatory
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, null, Color.White, 0f, originPlayer, 0.5f,  SpriteEffects.None, 0f);
             spriteBatch.End();
         }
     }

@@ -25,6 +25,7 @@ namespace PlasmaPurgatory
 
         protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {
+            return true;
             if (postion.X > graphicsDevice.Viewport.Width - texture.Width)
             {
                 position.X = graphicsDevice.Viewport.Width - texture.Width;

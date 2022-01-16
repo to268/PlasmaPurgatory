@@ -20,6 +20,8 @@ namespace PlasmaPurgatory
         //private TiledMap _tiledMap;
         //private TiledMapRenderer _tiledMapRenderer;
 
+        private Player player;
+
 
         public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
         {
@@ -31,6 +33,10 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             mapPos = new Vector2(0, 0);
+
+            // TODO: Initialize the player when loading the level
+            player = new Player(contentManager, graphicsDevice);
+            player.Initialize();
         }
 
         public void LoadContent()
@@ -41,18 +47,22 @@ namespace PlasmaPurgatory
 
             //_tiledMap = contentManager.Load<TiledMap>("map");
             //_tiledMapRenderer = new TiledMapRenderer(graphicsDevice, _tiledMap);
+
+            player.LoadContent();
         }
 
         public void Update(GameTime gameTime)
         {
-
+            player.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
             spriteBatch.Draw(map, mapPos, Color.White);
+            
             spriteBatch.End();
+            player.Draw(gameTime);
         }
     }
 }

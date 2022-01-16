@@ -81,6 +81,7 @@ namespace PlasmaPurgatory
                     menu.Update(gameTime);
                     break;
                 case SceneType.LEVEL:
+                    level.Update(gameTime);
                     break;
                 default:
                     break;

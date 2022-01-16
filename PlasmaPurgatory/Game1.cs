@@ -23,10 +23,7 @@ namespace PlasmaPurgatory
         {
             //menu = new Menu(_graphics, _spriteBatch);
 
-            // TODO: Initialize the player when loading the level
-            //player = new Player(Content, GraphicsDevice);
-            //player.Initialize();
-            // Change Window size
+            //Change Window size
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 600;
             graphics.PreferredBackBufferHeight = 900;
