@@ -1,0 +1,8 @@
+{
+  "textureAtlas": {
+    "texture": "TilesLevel.png",
+    "regionWidth": 85,
+    "regionHeight": 85
+  },
+  "cycles": {}
+}

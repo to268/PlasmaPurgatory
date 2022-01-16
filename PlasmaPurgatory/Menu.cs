@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Content;
+using MonoGame.Extended.Serialization;
 
 namespace PlasmaPurgatory
 {
@@ -17,7 +20,7 @@ namespace PlasmaPurgatory
             public Vector2 origin;
             public Rectangle hitbox;
         }
-        
+
         public const float scale = .3f;
         private const int BUTTONS_COUNT = 2;
         
@@ -28,7 +31,13 @@ namespace PlasmaPurgatory
         private SceneManager sceneManager;
         private MouseState mouseState;
         private Point mousePosition;
+        
         private Texture2D titleTexture;
+        private Texture2D buttonTexture;
+        private Texture2D textBoxTexture;
+        private Texture2D logoTexture;
+        private Vector2 logoPos;
+        private Texture2D tilesLevelTexture;
 
         public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
         {
@@ -46,24 +55,28 @@ namespace PlasmaPurgatory
             buttons[0].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3f);
             buttons[0].color = Color.White;
 
-
             buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 2f);
             buttons[1].color = Color.White;
+            
+            logoPos = new Vector2(graphicsDevice.Viewport.Width / 2f, 100);
         }
 
         public void LoadContent()
         {
             spriteBatch = new SpriteBatch(graphicsDevice);
-            
+
             titleTexture = contentManager.Load<Texture2D>("TitleScreen");
-            
-            buttons[0].normalTexture = contentManager.Load<Texture2D>("LargeButtons\\LargeButtons\\PlayButton");
-            buttons[0].hoverTexture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Playcol_Button");
+            //tilesLevelTexture = contentManager.Load<Texture2D>("TilesLevel");
+            //textBoxTexture = contentManager.Load<Texture2D>("TextBox");
+            //buttonTexture = contentManager.Load<Texture2D>("Button");
+            logoTexture = contentManager.Load<Texture2D>("Logo");
+            buttons[0].normalTexture =contentManager.Load<Texture2D>("Play"); 
+            buttons[0].hoverTexture = contentManager.Load<Texture2D>("PlayNeg");
             buttons[0].origin = new Vector2(buttons[0].normalTexture.Width / 2f, buttons[0].normalTexture.Height / 2f);
             buttons[0].currentTexture = buttons[0].normalTexture;
 
-            buttons[1].normalTexture = contentManager.Load<Texture2D>("LargeButtons\\LargeButtons\\OptionsButton");
-            buttons[1].hoverTexture = contentManager.Load<Texture2D>("LargeButtons\\ColoredLargeButtons\\Optionscol_Button");
+            buttons[1].normalTexture = contentManager.Load<Texture2D>("Exit");
+            buttons[1].hoverTexture = contentManager.Load<Texture2D>("ExitNeg");
             buttons[1].origin = new Vector2(buttons[1].normalTexture.Width / 2f, buttons[1].normalTexture.Height / 2f);
             buttons[1].currentTexture = buttons[1].normalTexture;
         }
@@ -96,7 +109,9 @@ namespace PlasmaPurgatory
             
             // Background
             spriteBatch.Draw(titleTexture, new Vector2(0,0), Color.White);
-            
+            spriteBatch.Draw(logoTexture, logoPos, null, Color.White, 0,
+                        new Vector2(logoTexture.Width/2f,logoTexture.Height/2f), 1.5f, 
+                            SpriteEffects.None, 0f); 
             // Buttons
             for (int i = 0; i < BUTTONS_COUNT; i++)
             {
@@ -106,6 +121,7 @@ namespace PlasmaPurgatory
 
                 spriteBatch.Draw(buttons[i].currentTexture, buttons[i].position, null, buttons[i].color,
                                  0, buttons[i].origin, scale, SpriteEffects.None, 0f);
+                
             }
             spriteBatch.End();
         }

@@ -1,0 +1,54 @@
+{
+  "textureAtlas": {
+    "texture": "..\\..\\..\\01\\TextBox.png",
+    "regionWidth": 85,
+    "regionHeight": 85
+  },
+  "cycles": {
+    "northWest": {
+      "frames": [0],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "west": {
+      "frames": [1],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "southWest": {
+      "frames": [2],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "south": {
+      "frames": [3],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "southEast": {
+      "frames": [4],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "east": {
+      "frames": [5],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "northEast": {
+      "frames": [6],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "north": {
+      "frames": [7],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "center": {
+      "frames": [8],
+      "isLooping": false,
+      "frameDuration": 0.2
+    }
+  }
+}
