@@ -14,10 +14,11 @@ namespace PlasmaPurgatory
         private ContentManager contentManager;
         private SceneManager sceneManager;
 
-        private Texture2D background;
-        private TiledMap map;
-        private TiledMap _tiledMap;
-        private TiledMapRenderer _tiledMapRenderer;
+        private Texture2D map;
+
+        private Vector2 mapPos;
+        //private TiledMap _tiledMap;
+        //private TiledMapRenderer _tiledMapRenderer;
 
 
         public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
@@ -29,26 +30,28 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
-
+            mapPos = new Vector2(0, 0);
         }
 
         public void LoadContent()
         {
             spriteBatch = new SpriteBatch(graphicsDevice);
 
-            _tiledMap = contentManager.Load<TiledMap>("map");
-            _tiledMapRenderer = new TiledMapRenderer(graphicsDevice, _tiledMap);
+            map = contentManager.Load<Texture2D>("Map");
+
+            //_tiledMap = contentManager.Load<TiledMap>("map");
+            //_tiledMapRenderer = new TiledMapRenderer(graphicsDevice, _tiledMap);
         }
 
         public void Update(GameTime gameTime)
         {
-            _tiledMapRenderer.Update(gameTime);
+
         }
 
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            _tiledMapRenderer.Draw();
+            spriteBatch.Draw(map, mapPos, Color.White);
             spriteBatch.End();
         }
     }
