@@ -12,9 +12,7 @@ namespace PlasmaPurgatory
         protected ContentManager contentManager;
         protected GraphicsDevice graphicsDevice;
 
-        protected AnimatedSprite animatedSprite;
         protected AnimationState animationState;
-        protected SpriteSheet animationSheet;
         protected Texture2D texture;
         protected SpriteBatch spriteBatch;
 
@@ -25,25 +23,24 @@ namespace PlasmaPurgatory
 
         protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {
-            return true;
-            if (postion.X > graphicsDevice.Viewport.Width - texture.Width)
+            if (postion.X > graphicsDevice.Viewport.Width - texture.Width / 8f)
             {
-                position.X = graphicsDevice.Viewport.Width - texture.Width;
+                position.X = graphicsDevice.Viewport.Width - texture.Width / 8f;
                 return false;
             }
-            else if (postion.X < 0)
+            else if (postion.Y > graphicsDevice.Viewport.Height - texture.Height / 4f)
             {
-                position.X = 0;
+                position.Y = graphicsDevice.Viewport.Height - texture.Height / 4f;
                 return false;
             }
-            else if (postion.Y > graphicsDevice.Viewport.Height - texture.Height)
+            else if (postion.X - (texture.Width / 9f) < 0)
             {
-                position.Y = graphicsDevice.Viewport.Height - texture.Height;
+                position.X = texture.Width / 9f;
                 return false;
             }
-            else if (postion.Y < 0)
+            else if (postion.Y - (texture.Height / 5f) < 0)
             {
-                position.Y = 0;
+                position.Y = texture.Height / 5f;
                 return false;
             }
 

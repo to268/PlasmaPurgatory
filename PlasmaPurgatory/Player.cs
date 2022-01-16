@@ -38,9 +38,6 @@ namespace PlasmaPurgatory
 
         public void LoadContent()
         {
-            // TODO: Add animations to the player
-            //animationSheet = contentManager.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
-            //animatedSprite = new AnimatedSprite(animationSheet);
             texture = contentManager.Load<Texture2D>("sGehenna");
             originPlayer = new Vector2(texture.Width / 2, texture.Height / 2);
         }
@@ -51,41 +48,24 @@ namespace PlasmaPurgatory
             animationState = AnimationState.IDLE;
 
             if (keyboardState.IsKeyDown(Keys.Up))
-            {
-                animationState = AnimationState.WALKNORTH;
-
                 movement.Y = -1;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                animationState = AnimationState.WALKSOUTH;
-
+            
+            if (keyboardState.IsKeyDown(Keys.Down))
                 movement.Y = 1;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                animationState = AnimationState.WALKWEST;
-
+            
+            if (keyboardState.IsKeyDown(Keys.Left))
                 movement.X = -1;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                animationState = AnimationState.WALKEAST;
-
+            
+            if (keyboardState.IsKeyDown(Keys.Right))
                 movement.X = 1;
-            }
-            else
-            {
-                animationState = AnimationState.IDLE;
-
-                movement = new Vector2(0, 0);
-            }
 
             if (CheckBound(position, graphicsDevice, texture))
                 position += movement * SPEED;
 
             recPlayer.X = (int)position.X;
             recPlayer.Y = (int)position.Y;
+            
+            movement = new Vector2(0, 0);
 
             // TODO: Implement attack feature
             //if (CheckCollision(recPlayer, recEnnemy) && keyboardState.IsKeyDown(Keys.Space))

@@ -33,7 +33,7 @@ namespace PlasmaPurgatory
         {
             // Load SubClasses
             menu = new Menu(graphicsDevice, contentManager, this);
-            level = new Level(graphicsDevice, contentManager, this);
+            level = new Level(graphicsDevice, contentManager);
 
 
             menu.Initialize();
