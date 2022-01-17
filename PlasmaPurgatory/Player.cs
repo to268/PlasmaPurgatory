@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -17,6 +18,11 @@ namespace PlasmaPurgatory
         private const float SPEED = 10;
         private const int MAX_PLAYER_HP = 3;
 
+        private Texture2D attack;
+        private Vector2 attackPos;
+        private bool isCooldown;
+        private int timer;
+
         public Player(ContentManager contentManager, GraphicsDevice graphicsDevice)
         {
             base.contentManager = contentManager;
@@ -29,16 +35,25 @@ namespace PlasmaPurgatory
             rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
             health = MAX_PLAYER_HP;
+            attackPos = new Vector2(position.X, position.Y - 100);
+            isCooldown = false;
+            timer = 60;
         }
 
         public void LoadContent()
         {
+            attack = contentManager.Load<Texture2D>("Attack");
             texture = contentManager.Load<Texture2D>("sGehenna");
             originPlayer = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
         public void Update(GameTime gameTime)
         {
+            if (timer == 0)
+            {
+                isCooldown = false;
+                timer = 60;
+            }
             keyboardState = Keyboard.GetState();
             animationState = AnimationState.IDLE;
 
@@ -57,6 +72,8 @@ namespace PlasmaPurgatory
             if (CheckBound(position, graphicsDevice, texture))
                 position += movement * SPEED;
 
+            timer--;
+
             rectangle.X = (int)position.X;
             rectangle.Y = (int)position.Y;
             
@@ -73,6 +90,11 @@ namespace PlasmaPurgatory
         {
             spriteBatch.Begin();
             spriteBatch.Draw(texture, position, null, Color.White, 0f, originPlayer, 0.5f,  SpriteEffects.None, 0f);
+            if (keyboardState.IsKeyDown(Keys.Space) && isCooldown == false)
+            {
+                spriteBatch.Draw(attack, attackPos, null, Color.White, 0f, new Vector2(0,0), 4f, SpriteEffects.None, 0f);
+                isCooldown = true;
+            }
             spriteBatch.End();
         }
     }
