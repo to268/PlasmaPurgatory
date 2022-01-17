@@ -23,8 +23,10 @@ namespace PlasmaPurgatory
 
         private EnemyType type;
         private EnemyState state;
+        private Vector2 pointToReach;
+        private bool isMoving;
         
-        private const float SPEED = 6f;
+        private const float SPEED = 0.2f;
 
         public EnemyState State
         {
@@ -38,6 +40,7 @@ namespace PlasmaPurgatory
             this.type = type;
             
             state = EnemyState.ALIVE;
+            isMoving = false;
             switch (type)
             {
                 case EnemyType.NORMAL:
@@ -56,6 +59,8 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3.5f);
+            movement = new Vector2(0, 0);
+            pointToReach = new Vector2(0, 0);
             rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
@@ -82,8 +87,11 @@ namespace PlasmaPurgatory
         {
             if (state == EnemyState.DEAD)
                 return;
-            
-            Move();
+
+            if (!isMoving)
+                FindPath();
+            else
+                Move();
             
             rectangle.X = (int)position.X;
             rectangle.Y = (int)position.Y;
@@ -108,7 +116,7 @@ namespace PlasmaPurgatory
         }
 
         // TODO: Try to make movement based on the player X position
-        private void Move()
+        private void FindPath()
         {
             Random random = new Random();
             int direction = random.Next(0, 1);
@@ -118,8 +126,19 @@ namespace PlasmaPurgatory
                 amount = -random.Next(1, (int)position.X);
             else
                 amount = random.Next(1, (int)(graphicsDevice.Viewport.Width - (position.X  + texture.Width)));
-            
-            position.X += amount;
+
+            pointToReach.X = amount;
+            movement = (pointToReach - position) * SPEED;
+            isMoving = true;
+        }
+
+        private void Move()
+        {
+            if (position != pointToReach)
+                position += movement;
+            else
+                isMoving = false;
+                
         }
     }
 }
