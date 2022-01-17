@@ -8,16 +8,14 @@ namespace PlasmaPurgatory
 
     class Player : EntitiesUtils
     {
-        public enum TypeCollision { NONE, ENNEMIS, BULLET, PLAYER };
+        public enum CollisionType { NONE, ENNEMIS, BULLET, PLAYER };
 
         private KeyboardState keyboardState;
-        private Rectangle recPlayer;
-        private TypeCollision collision;
-        private int currentHealth;
         private Vector2 originPlayer;
+        private CollisionType collision;
 
-        private const float SPEED = 6;
-        private const int MAX_HP = 3;
+        private const float SPEED = 10;
+        private const int MAX_PLAYER_HP = 3;
 
         public Player(ContentManager contentManager, GraphicsDevice graphicsDevice)
         {
@@ -27,19 +25,16 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
-            position = new Vector2(graphicsDevice.Viewport.Width/2, 600);
-            recPlayer = new Rectangle((int)position.X, (int)position.Y, 30, 30);
+            position = new Vector2(graphicsDevice.Viewport.Width / 2f, 600);
+            rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
-            
-            currentHealth = MAX_HP;
-
-            movement = new Vector2(0,0);
+            health = MAX_PLAYER_HP;
         }
 
         public void LoadContent()
         {
             texture = contentManager.Load<Texture2D>("sGehenna");
-            originPlayer = new Vector2(texture.Width / 2, texture.Height / 2);
+            originPlayer = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
         public void Update(GameTime gameTime)
@@ -62,8 +57,8 @@ namespace PlasmaPurgatory
             if (CheckBound(position, graphicsDevice, texture))
                 position += movement * SPEED;
 
-            recPlayer.X = (int)position.X;
-            recPlayer.Y = (int)position.Y;
+            rectangle.X = (int)position.X;
+            rectangle.Y = (int)position.Y;
             
             movement = new Vector2(0, 0);
 

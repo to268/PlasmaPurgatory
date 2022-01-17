@@ -15,11 +15,11 @@ namespace PlasmaPurgatory
         protected AnimationState animationState;
         protected Texture2D texture;
         protected SpriteBatch spriteBatch;
+        protected Rectangle rectangle;
 
         protected Vector2 position;
         protected Vector2 movement;
         protected int health;
-
 
         protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {
