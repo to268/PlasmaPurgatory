@@ -23,7 +23,6 @@ namespace PlasmaPurgatory
         protected Vector2 movement;
         protected int health;
 
-
         protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {
             if (postion.X > graphicsDevice.Viewport.Width - texture.Width)

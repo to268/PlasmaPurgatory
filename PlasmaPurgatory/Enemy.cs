@@ -14,6 +14,7 @@ namespace PlasmaPurgatory
             BARBAROSSA,
             BIGGARRY,
             DATASS,
+            HADES,
         }
         
         public enum EnemyState
@@ -32,6 +33,11 @@ namespace PlasmaPurgatory
         public EnemyState State
         {
             get { return state; }
+        }
+        
+        public int Health
+        {
+            get { return health; }
         }
         
         public Enemy(ContentManager contentManager, GraphicsDevice graphicsDevice, EnemyType type)
@@ -54,6 +60,10 @@ namespace PlasmaPurgatory
                 
                 case EnemyType.BIGGARRY:
                     health = 3;
+                    break;
+                
+                case EnemyType.HADES:
+                    health = 6;
                     break;
 
                 default:
