@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -39,7 +40,17 @@ namespace PlasmaPurgatory
         {
             get { return health; }
         }
-        
+
+        public Vector2 Position
+        {
+            get { return position; }
+        }
+
+        public Texture2D Texture
+        {
+            get { return texture; }
+        }
+
         public Enemy(ContentManager contentManager, GraphicsDevice graphicsDevice, EnemyType type)
         {
             this.contentManager = contentManager;
@@ -69,11 +80,12 @@ namespace PlasmaPurgatory
                 default:
                     break;
             }
+
+            position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3.5f);
         }
         
         public void Initialize()
         {
-            position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3.5f);
             movement = new Vector2(0, 0);
             pointToReach = new Vector2(0, 0);
             rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
@@ -86,15 +98,15 @@ namespace PlasmaPurgatory
             switch (type)
             {
                 case EnemyType.BARBAROSSA:
-                    texture = contentManager.Load<Texture2D>("Ememy\\Barbarossa");
+                    texture = contentManager.Load<Texture2D>("Barbarossa");
                     break;
                     
                 case EnemyType.DATASS:
-                    texture = contentManager.Load<Texture2D>("Ememy\\Datass");
+                    texture = contentManager.Load<Texture2D>("Datass");
                     break;
                 
                 case EnemyType.BIGGARRY:
-                    texture = contentManager.Load<Texture2D>("Ememy\\BigGarry");
+                    texture = contentManager.Load<Texture2D>("BigGarry");
                     break;
                 
                 default:
@@ -106,11 +118,11 @@ namespace PlasmaPurgatory
         {
             if (state == EnemyState.DEAD)
                 return;
-
-            if (!isMoving)
+           
+            /*if (!isMoving)
                 FindPath();
             else
-                Move();
+                Move();*/
             
             rectangle.X = (int)position.X;
             rectangle.Y = (int)position.Y;

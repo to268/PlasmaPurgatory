@@ -1,14 +1,26 @@
+using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled.Renderers;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using PlasmaPurgatory.Generator;
 
 namespace PlasmaPurgatory
 {
     public class Level
     {
+
+        private struct EnemyData
+        {
+            public Enemy enemy;
+            public List<PatternPreset> patterns;
+        }
+
+        private List<EnemyData> enemies;
+
         private GraphicsDevice graphicsDevice;
         private SpriteBatch spriteBatch;
         private ContentManager contentManager;
@@ -23,6 +35,8 @@ namespace PlasmaPurgatory
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
+            enemies = new List<EnemyData>();
+            
         }
 
         public void Initialize()
@@ -30,6 +44,17 @@ namespace PlasmaPurgatory
             mapPos = new Vector2(0, 0);
 
             player = new Player(contentManager, graphicsDevice);
+
+            CreateBigGarry();
+
+            foreach (EnemyData enemy in enemies)
+                enemy.enemy.Initialize();
+
+            foreach (EnemyData enemyData in enemies)
+                for (int i = 0; i < enemyData.patterns.Count; i++)
+                    enemyData.patterns[i].ApplyPattern();
+
+
             player.Initialize();
         }
 
@@ -41,12 +66,58 @@ namespace PlasmaPurgatory
             //_tiledMap = contentManager.Load<TiledMap>("map");
             //_tiledMapRenderer = new TiledMapRenderer(graphicsDevice, _tiledMap);
 
+            foreach (EnemyData enemy in enemies)
+                enemy.enemy.LoadContent();
+
+            foreach (EnemyData enemyData in enemies)
+                for (int i = 0; i < enemyData.patterns.Count; i++)
+                    for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
+                        enemyData.patterns[i].Bullets[j].LoadContent();
+
             player.LoadContent();
         }
 
         public void Update(GameTime gameTime)
         {
+            foreach (EnemyData enemy in enemies)
+                enemy.enemy.Update(gameTime);
+
+            foreach (EnemyData enemyData in enemies)
+                for (int i = 0; i < enemyData.patterns.Count; i++)
+                    for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
+                        enemyData.patterns[i].Bullets[j].Update(gameTime);
+
             player.Update(gameTime);
+        }
+
+        private void CreateBigGarry()
+        {
+            EnemyData BigGar = new EnemyData();
+            BigGar.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.BIGGARRY);
+            BigGar.patterns = new List<PatternPreset>();
+            BigGar.enemy.LoadContent();
+
+            PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
+            polarProperties.startMagnitude = 40f;
+            polarProperties.startPhase = 0;
+            polarProperties.incrementMagnitude = 2f;
+            polarProperties.incrementPhase = MathsUtils.DegresToRadians(1f);
+            polarProperties.multiplierMagnitude = 1;
+            polarProperties.multiplierPhase = 1f;
+
+            Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
+            bulletProperties.movementSpeed = 0.12f;
+            bulletProperties.rotationSpeed = 0;
+            bulletProperties.bulletProbability = 2;
+
+            Vector2 originPat = BigGar.enemy.Position;
+            originPat.X += BigGar.enemy.Texture.Width / 2;
+            originPat.Y += BigGar.enemy.Texture.Height / 2;
+            PatternPreset circlePreset= new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 10);
+
+            BigGar.patterns.Add(circlePreset);
+
+            enemies.Add(BigGar);
         }
 
         public void Draw(GameTime gameTime)
@@ -54,7 +125,15 @@ namespace PlasmaPurgatory
             spriteBatch.Begin();
             spriteBatch.Draw(map, mapPos, Color.White);
             spriteBatch.End();
-            
+
+            foreach(EnemyData enemyData in enemies)
+                for (int i = 0; i < enemyData.patterns.Count; i++)
+                    for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
+                        enemyData.patterns[i].Bullets[j].Draw(gameTime);
+
+            foreach (EnemyData enemy in enemies)
+                enemy.enemy.Draw(gameTime);
+
             player.Draw(gameTime);
         }
     }
