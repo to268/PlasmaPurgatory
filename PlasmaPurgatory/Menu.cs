@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Serialization;
@@ -40,6 +41,7 @@ namespace PlasmaPurgatory
         private Texture2D tilesLevelTexture;
 
         private Game1 game1;
+        private Song bgm;
 
         public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager, Game1 game1)
         {
@@ -50,10 +52,12 @@ namespace PlasmaPurgatory
 
             buttons = new Button[BUTTONS_COUNT];
             PopulateButtonArray();
+
         }
 
         public void Initialize()
         {
+            
             // Start button properties
             buttons[0].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3f);
             buttons[0].color = Color.White;
@@ -66,6 +70,7 @@ namespace PlasmaPurgatory
 
         public void LoadContent()
         {
+
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             titleTexture = contentManager.Load<Texture2D>("TitleScreen");
@@ -82,6 +87,11 @@ namespace PlasmaPurgatory
             buttons[1].hoverTexture = contentManager.Load<Texture2D>("ExitNeg");
             buttons[1].origin = new Vector2(buttons[1].normalTexture.Width / 2f, buttons[1].normalTexture.Height / 2f);
             buttons[1].currentTexture = buttons[1].normalTexture;
+
+            bgm = contentManager.Load<Song>("Karl Casey - Empty City (1)");
+
+            MediaPlayer.Volume = .1f;
+            MediaPlayer.Play(bgm);
         }
 
         public void Update(GameTime gameTime)

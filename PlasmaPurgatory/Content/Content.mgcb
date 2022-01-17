@@ -97,6 +97,12 @@
 /processorParam:TextureFormat=Color
 /build:Hades.png
 
+#begin Karl Casey - Empty City (1).ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Karl Casey - Empty City (1).ogg
+
 #begin Logo.png
 /importer:TextureImporter
 /processor:TextureProcessor

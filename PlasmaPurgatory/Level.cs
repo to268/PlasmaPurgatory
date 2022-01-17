@@ -6,6 +6,7 @@ using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled.Renderers;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using PlasmaPurgatory.Generator;
 
 namespace PlasmaPurgatory
@@ -45,7 +46,9 @@ namespace PlasmaPurgatory
 
             player = new Player(contentManager, graphicsDevice);
 
-            CreateBigGarry();
+            //CreateBigGarry();
+            //CreateBarbarossa();
+            CreateDatass();
 
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Initialize();
@@ -60,6 +63,7 @@ namespace PlasmaPurgatory
 
         public void LoadContent()
         {
+            MediaPlayer.Stop();
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             map = contentManager.Load<Texture2D>("Map");
@@ -118,6 +122,66 @@ namespace PlasmaPurgatory
             BigGar.patterns.Add(circlePreset);
 
             enemies.Add(BigGar);
+        }
+
+        private void CreateDatass()
+        {
+            EnemyData Dat = new EnemyData();
+            Dat.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.DATASS);
+            Dat.patterns = new List<PatternPreset>();
+            Dat.enemy.LoadContent();
+
+            PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
+            polarProperties.startMagnitude = 40f;
+            polarProperties.startPhase = 0;
+            polarProperties.incrementMagnitude = 2f;
+            polarProperties.incrementPhase = MathsUtils.DegresToRadians(1f);
+            polarProperties.multiplierMagnitude = 1;
+            polarProperties.multiplierPhase = 1f;
+
+            Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
+            bulletProperties.movementSpeed = 0.12f;
+            bulletProperties.rotationSpeed = 0;
+            bulletProperties.bulletProbability = 2;
+
+            Vector2 originPat = Dat.enemy.Position;
+            originPat.X += Dat.enemy.Texture.Width / 2;
+            originPat.Y += Dat.enemy.Texture.Height / 2;
+            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.SHOTGUN, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 3);
+
+            Dat.patterns.Add(circlePreset);
+
+            enemies.Add(Dat);
+        }
+
+        private void CreateBarbarossa()
+        {
+            EnemyData Bar = new EnemyData();
+            Bar.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.BARBAROSSA);
+            Bar.patterns = new List<PatternPreset>();
+            Bar.enemy.LoadContent();
+
+            PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
+            polarProperties.startMagnitude = 40f;
+            polarProperties.startPhase = MathsUtils.DegresToRadians(90f);
+            polarProperties.incrementMagnitude = 2f;
+            polarProperties.incrementPhase = MathsUtils.DegresToRadians(1f);
+            polarProperties.multiplierMagnitude = 1;
+            polarProperties.multiplierPhase = 1f;
+
+            Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
+            bulletProperties.movementSpeed = 0.12f;
+            bulletProperties.rotationSpeed = 0;
+            bulletProperties.bulletProbability = 2;
+
+            Vector2 originPat = Bar.enemy.Position;
+            originPat.X += Bar.enemy.Texture.Width / 2;
+            originPat.Y += Bar.enemy.Texture.Height / 2;
+            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 1);
+
+            Bar.patterns.Add(circlePreset);
+
+            enemies.Add(Bar);
         }
 
         public void Draw(GameTime gameTime)
