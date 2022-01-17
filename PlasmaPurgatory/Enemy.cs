@@ -11,8 +11,9 @@ namespace PlasmaPurgatory
     {
         public enum EnemyType
         {
-            NORMAL,
-            BOSS,
+            BARBAROSSA,
+            BIGGARRY,
+            DATASS,
         }
         
         public enum EnemyState
@@ -43,12 +44,16 @@ namespace PlasmaPurgatory
             isMoving = false;
             switch (type)
             {
-                case EnemyType.NORMAL:
-                    health = 3;
+                case EnemyType.BARBAROSSA:
+                    health = 1;
                     break;
                 
-                case EnemyType.BOSS:
-                    health = 8;
+                case EnemyType.DATASS:
+                    health = 2;
+                    break;
+                
+                case EnemyType.BIGGARRY:
+                    health = 3;
                     break;
 
                 default:
@@ -70,12 +75,16 @@ namespace PlasmaPurgatory
             // TODO: Load the correct texture
             switch (type)
             {
-                case EnemyType.NORMAL:
-                    texture = contentManager.Load<Texture2D>("Player");
+                case EnemyType.BARBAROSSA:
+                    texture = contentManager.Load<Texture2D>("Ememy\\Barbarossa");
                     break;
                     
-                case EnemyType.BOSS:
-                    texture = contentManager.Load<Texture2D>("Player");
+                case EnemyType.DATASS:
+                    texture = contentManager.Load<Texture2D>("Ememy\\Datass");
+                    break;
+                
+                case EnemyType.BIGGARRY:
+                    texture = contentManager.Load<Texture2D>("Ememy\\BigGarry");
                     break;
                 
                 default:
@@ -123,7 +132,7 @@ namespace PlasmaPurgatory
             int amount;
 
             if (direction == 0)
-                amount = -random.Next(1, (int)position.X);
+                amount = -random.Next(1, (int)position.X - texture.Width);
             else
                 amount = random.Next(1, (int)(graphicsDevice.Viewport.Width - (position.X  + texture.Width)));
 
@@ -138,7 +147,6 @@ namespace PlasmaPurgatory
                 position += movement;
             else
                 isMoving = false;
-                
         }
     }
 }
