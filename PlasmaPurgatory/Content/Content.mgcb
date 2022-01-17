@@ -199,3 +199,9 @@
 /processorParam:TextureFormat=Color
 /build:TitleScreen.png
 
+#begin Vladmsorensen-Spectre [Synthwave]from Royalty Free Planet.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Vladmsorensen-Spectre [Synthwave]from Royalty Free Planet.ogg
+

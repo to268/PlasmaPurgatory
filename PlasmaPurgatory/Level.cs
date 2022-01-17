@@ -32,6 +32,8 @@ namespace PlasmaPurgatory
         //private TiledMap _tiledMap;
         //private TiledMapRenderer _tiledMapRenderer;
 
+        private Song bgm;
+
         public Level(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             this.graphicsDevice = graphicsDevice;
@@ -79,6 +81,11 @@ namespace PlasmaPurgatory
                         enemyData.patterns[i].Bullets[j].LoadContent();
 
             player.LoadContent();
+
+            bgm = contentManager.Load<Song>("Vladmsorensen-Spectre [Synthwave]from Royalty Free Planet");
+
+            MediaPlayer.Volume = .1f;
+            MediaPlayer.Play(bgm);
         }
 
         public void Update(GameTime gameTime)
