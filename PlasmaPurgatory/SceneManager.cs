@@ -19,12 +19,14 @@ namespace PlasmaPurgatory
         private GraphicsDevice graphicsDevice;
         private Menu menu;
         private Level level;
+        private Game1 game1;
         private SceneType currentScene;
 
-        public SceneManager(ContentManager contentManager, GraphicsDevice graphicsDevice)
+        public SceneManager(ContentManager contentManager, GraphicsDevice graphicsDevice, Game1 game1)
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
+            this.game1 = game1;
 
             currentScene = SceneType.MENU;
         }
@@ -32,9 +34,8 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             // Load SubClasses
-            menu = new Menu(graphicsDevice, contentManager, this);
+            menu = new Menu(graphicsDevice, contentManager, this, game1);
             level = new Level(graphicsDevice, contentManager);
-
 
             menu.Initialize();
             level.Initialize();

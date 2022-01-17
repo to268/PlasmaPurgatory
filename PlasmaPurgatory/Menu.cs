@@ -39,11 +39,14 @@ namespace PlasmaPurgatory
         private Vector2 logoPos;
         private Texture2D tilesLevelTexture;
 
-        public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
+        private Game1 game1;
+
+        public Menu(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager, Game1 game1)
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
             this.sceneManager = sceneManager;
+            this.game1 = game1;
 
             buttons = new Button[BUTTONS_COUNT];
             PopulateButtonArray();
@@ -98,6 +101,11 @@ namespace PlasmaPurgatory
                         // TODO: Fix the bug where the hoverTexture is not displayed before changing scene
                         Draw(gameTime);
                         sceneManager.ChangeScene(SceneManager.SceneType.LEVEL);
+                    }
+
+                    if (i == 1)
+                    {
+                        game1.ExitGame();
                     }
                 }
             }

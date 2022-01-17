@@ -29,7 +29,7 @@ namespace PlasmaPurgatory
             graphics.PreferredBackBufferHeight = 900;
             graphics.ApplyChanges();
             
-            sceneManager = new SceneManager(Content, GraphicsDevice);
+            sceneManager = new SceneManager(Content, GraphicsDevice, this);
             
             /*Vector2 origin = new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height / 2f);
 
@@ -83,5 +83,11 @@ namespace PlasmaPurgatory
             sceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }
+
+        public void ExitGame()
+        {
+            Exit();
+        }
+
     }
 }
