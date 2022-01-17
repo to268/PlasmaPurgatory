@@ -29,7 +29,7 @@ namespace PlasmaPurgatory
         private Vector2 pointToReach;
         private bool isMoving;
         
-        private const float SPEED = 0.2f;
+        private const float SPEED = 0.02f;
 
         public EnemyState State
         {
@@ -81,13 +81,13 @@ namespace PlasmaPurgatory
                     break;
             }
 
-            position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3.5f);
+            position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 4f);
         }
         
         public void Initialize()
         {
-            movement = new Vector2(0, 0);
-            pointToReach = new Vector2(0, 0);
+            movement = new Vector2(0, graphicsDevice.Viewport.Height / 4f);
+            pointToReach = new Vector2(0, graphicsDevice.Viewport.Height / 4f);
             rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
@@ -119,10 +119,13 @@ namespace PlasmaPurgatory
             if (state == EnemyState.DEAD)
                 return;
            
-            /*if (!isMoving)
+            if (position.X < 0 || position.X > graphicsDevice.Viewport.Width - texture.Width)
+                Reset();
+            
+            if (!isMoving)
                 FindPath();
             else
-                Move();*/
+                Move();
             
             rectangle.X = (int)position.X;
             rectangle.Y = (int)position.Y;
@@ -150,25 +153,36 @@ namespace PlasmaPurgatory
         private void FindPath()
         {
             Random random = new Random();
-            int direction = random.Next(0, 1);
+            int direction = random.Next(0, 2);
             int amount;
 
-            if (direction == 0)
-                amount = -random.Next(1, (int)position.X - texture.Width);
-            else
-                amount = random.Next(1, (int)(graphicsDevice.Viewport.Width - (position.X  + texture.Width)));
-
-            pointToReach.X = amount;
-            movement = (pointToReach - position) * SPEED;
+            if (direction == 0 && position.X > 0)
+            {
+                amount = -random.Next(0, (int)(position.X - texture.Width));
+                pointToReach.X = (amount + position.X);
+            }
+            else if (position.X < graphicsDevice.Viewport.Width - texture.Width)
+            {
+                amount = random.Next(0, (int)(graphicsDevice.Viewport.Width - (position.X  + texture.Width)));
+                pointToReach.X = (position.X + amount);
+            }
+            
+            movement.X = (pointToReach.X - position.X) * SPEED;
             isMoving = true;
         }
 
         private void Move()
         {
-            if (position != pointToReach)
-                position += movement;
+            if ((int)position.X != (int)pointToReach.X)
+                position.X += movement.X;
             else
                 isMoving = false;
+        }
+
+        private void Reset()
+        {
+            pointToReach = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 4f);
+            movement.X = (pointToReach.X - position.X) * SPEED;
         }
     }
 }
