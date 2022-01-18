@@ -41,11 +41,6 @@ namespace PlasmaPurgatory
             get { return state; }
         }
         
-        public int Health
-        {
-            get { return health; }
-        }
-
         public Vector2 Position
         {
             get { return position; }

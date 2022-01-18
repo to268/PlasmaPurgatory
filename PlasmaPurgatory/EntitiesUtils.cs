@@ -26,6 +26,11 @@ namespace PlasmaPurgatory
         {
             get { return rectangle; }
         }
+        
+        public int Health
+        {
+            get { return health; }
+        }
 
         protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {
