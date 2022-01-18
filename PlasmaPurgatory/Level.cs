@@ -110,6 +110,7 @@ namespace PlasmaPurgatory
         public void Update(GameTime gameTime)
         {
             Collisions.CheckCollision(player, player.RectAttack, enemies);
+            RemoveDeadEnemies();
             
             if (timer <= 0)
             {
@@ -287,6 +288,13 @@ namespace PlasmaPurgatory
                 for (int i = 0; i < enemyData.patterns.Count; i++)
                     for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
                         enemyData.patterns[i].Bullets[j].Draw(gameTime);
+        }
+
+        private void RemoveDeadEnemies()
+        {
+            for (int i = 0; i < enemies.Count; i++)
+                if (enemies[i].enemy.State == Enemy.EnemyState.DEAD)
+                    enemies.Remove(enemies[i]);
         }
     }
 }
