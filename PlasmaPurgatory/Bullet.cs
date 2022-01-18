@@ -63,6 +63,7 @@ namespace PlasmaPurgatory
             CalculateMovementVector();
 
             type = RandomBulletType();
+            LoadContent();
         }
 
         public void Initialize()

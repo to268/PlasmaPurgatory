@@ -54,6 +54,13 @@ namespace PlasmaPurgatory
             CreateBarbarossa();
             CreateBarbarossa();
             CreateBarbarossa();
+            
+            foreach (EnemyData enemy in enemies)
+                enemy.enemy.Initialize();
+
+            CreateBarbarossaPattern(enemies[0]);
+            CreateBarbarossaPattern(enemies[1]);
+            CreateBarbarossaPattern(enemies[2]);
 
             startCount = enemies.Count;
             midCount = enemies.Count - 1;
@@ -70,14 +77,6 @@ namespace PlasmaPurgatory
                 CreateBigGarry();
                 CreateBigGarry();
             }
-
-            foreach (EnemyData enemy in enemies)
-                enemy.enemy.Initialize();
-
-            foreach (EnemyData enemyData in enemies)
-                for (int i = 0; i < enemyData.patterns.Count; i++)
-                    enemyData.patterns[i].ApplyPattern();
-
 
             player.Initialize();
             timer = 0;
@@ -110,7 +109,6 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
-            Debug.WriteLine(timer);
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Update(gameTime);
 
@@ -118,17 +116,16 @@ namespace PlasmaPurgatory
             {
                 if (timer <= 0)
                 {
-                    Debug.WriteLine(enemy.enemy.Type);
                     if (enemy.enemy.Type == Enemy.EnemyType.BARBAROSSA)
                         CreateBarbarossaPattern(enemy);
                     if (enemy.enemy.Type == Enemy.EnemyType.BIGGARRY)
                         CreateBigGarryPattern(enemy);
                     if (enemy.enemy.Type == Enemy.EnemyType.DATASS)
                         CreateDatassPattern(enemy);
-                    timer = 60 * 2;
+                    timer = 300;
                 }
             }
-
+            
             foreach (EnemyData enemyData in enemies)
                 for (int i = 0; i < enemyData.patterns.Count; i++)
                     for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
@@ -148,7 +145,7 @@ namespace PlasmaPurgatory
             enemies.Add(BigGar);
         }
 
-        private void CreateBigGarryPattern(EnemyData BigGar)
+        private void CreateBigGarryPattern(EnemyData bigGar)
         {
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
@@ -163,12 +160,13 @@ namespace PlasmaPurgatory
             bulletProperties.rotationSpeed = 0;
             bulletProperties.bulletProbability = 2;
 
-            Vector2 originPat = BigGar.enemy.Position;
-            originPat.X += BigGar.enemy.Texture.Width / 2;
-            originPat.Y += BigGar.enemy.Texture.Height / 2;
+            Vector2 originPat = bigGar.enemy.Position;
+            originPat.X += bigGar.enemy.Texture.Width / 2;
+            originPat.Y += bigGar.enemy.Texture.Height / 2;
             PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 10);
-
-            BigGar.patterns.Add(circlePreset);
+            
+            circlePreset.ApplyPattern();
+            bigGar.patterns.Add(circlePreset);
         }
 
         private void CreateDatass()
@@ -183,7 +181,7 @@ namespace PlasmaPurgatory
             enemies.Add(Dat);
         }
 
-        private void CreateDatassPattern(EnemyData Dat)
+        private void CreateDatassPattern(EnemyData dat)
         {
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
@@ -198,25 +196,26 @@ namespace PlasmaPurgatory
             bulletProperties.rotationSpeed = 0;
             bulletProperties.bulletProbability = 2;
 
-            Vector2 originPat = Dat.enemy.Position;
-            originPat.X += Dat.enemy.Texture.Width / 2;
-            originPat.Y += Dat.enemy.Texture.Height / 2;
+            Vector2 originPat = dat.enemy.Position;
+            originPat.X += dat.enemy.Texture.Width / 2;
+            originPat.Y += dat.enemy.Texture.Height / 2;
             PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.SHOTGUN, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 3);
 
-            Dat.patterns.Add(circlePreset);
+            circlePreset.ApplyPattern();
+            dat.patterns.Add(circlePreset);
         }
 
         private void CreateBarbarossa()
         {
-            EnemyData Bar = new EnemyData();
-            Bar.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.BARBAROSSA);
-            Bar.patterns = new List<PatternPreset>();
-            Bar.enemy.LoadContent();
+            EnemyData bar = new EnemyData();
+            bar.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.BARBAROSSA);
+            bar.patterns = new List<PatternPreset>();
+            bar.enemy.LoadContent();
 
-            enemies.Add(Bar);
+            enemies.Add(bar);
         }
 
-        private void CreateBarbarossaPattern(EnemyData Bar)
+        private void CreateBarbarossaPattern(EnemyData bar)
         {
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
@@ -231,22 +230,23 @@ namespace PlasmaPurgatory
             bulletProperties.rotationSpeed = 0;
             bulletProperties.bulletProbability = 2;
 
-            Vector2 originPat = Bar.enemy.Position;
-            originPat.X += Bar.enemy.Texture.Width / 2;
-            originPat.Y += Bar.enemy.Texture.Height / 2;
+            Vector2 originPat = bar.enemy.Position;
+            originPat.X += bar.enemy.Texture.Width / 2;
+            originPat.Y += bar.enemy.Texture.Height / 2;
             PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 1);
-
-            Bar.patterns.Add(circlePreset);
+                    
+            circlePreset.ApplyPattern();
+            bar.patterns.Add(circlePreset);
         }
 
         private void CreateHades()
         {
-            EnemyData Had = new EnemyData();
-            Had.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.HADES);
-            Had.patterns = new List<PatternPreset>();
-            Had.enemy.LoadContent();
+            EnemyData had = new EnemyData();
+            had.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.HADES);
+            had.patterns = new List<PatternPreset>();
+            had.enemy.LoadContent();
 
-            enemies.Add(Had);
+            enemies.Add(had);
         }
 
         public void Draw(GameTime gameTime)
