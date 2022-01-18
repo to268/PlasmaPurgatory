@@ -93,7 +93,6 @@ namespace PlasmaPurgatory
         {
             movement = new Vector2(0, graphicsDevice.Viewport.Height / 4f);
             pointToReach = new Vector2(0, graphicsDevice.Viewport.Height / 4f);
-            rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
 
@@ -119,6 +118,8 @@ namespace PlasmaPurgatory
                 default:
                     break;
             }
+            
+            rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
         public void Update(GameTime gameTime)

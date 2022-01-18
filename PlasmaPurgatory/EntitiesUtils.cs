@@ -7,6 +7,7 @@ namespace PlasmaPurgatory
 {
     public class EntitiesUtils
     {
+        // TODO: Refactor inheritance
         protected enum AnimationState { IDLE, WALKNORTH, WALKSOUTH, WALKEAST, WALKWEST, ATTACK };
 
         protected ContentManager contentManager;

@@ -46,6 +46,12 @@ namespace PlasmaPurgatory
             get { return rectangle; }
         }
 
+        public bool IsBulletDead
+        {
+            get { return isBulletDead; }
+            set { isBulletDead = value; }
+        }
+
         public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, Vector2 targetPosition, 
                       BulletProperties bulletProperties)
         {
@@ -110,7 +116,7 @@ namespace PlasmaPurgatory
         private void MoveBullet()
         {
             if ((position.X + texture.Width) < 0 || position.X > graphicsDevice.Viewport.Width &&
-                position.Y < 0 || position.Y > graphicsDevice.Viewport.Height)
+                position.Y < 0 || position.Y > graphicsDevice.Viewport.Height) 
                 isBulletDead = true;
             
             if (!isBulletDead)

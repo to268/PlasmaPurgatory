@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Content;
@@ -50,16 +51,16 @@ namespace PlasmaPurgatory
 
             player = new Player(contentManager, graphicsDevice);
 
-            CreateHades();
-            CreateBigGarry();
+            //CreateHades();
+            //CreateBigGarry();
             CreateBigGarry();
             
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Initialize();
 
             CreateBarbarossaPattern(enemies[0]);
-            CreateBarbarossaPattern(enemies[1]);
-            CreateBarbarossaPattern(enemies[2]);
+            //CreateBarbarossaPattern(enemies[1]);
+            //CreateBarbarossaPattern(enemies[2]);
 
             startCount = enemies.Count;
             midCount = enemies.Count - 1;
@@ -108,6 +109,8 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
+            Collisions.CheckCollision(player, player.RectAttack, enemies);
+            
             if (timer <= 0)
             {
                 foreach (EnemyData enemy in enemies)
@@ -120,7 +123,9 @@ namespace PlasmaPurgatory
                         CreateDatassPattern(enemy);
                     if (enemy.enemy.Type == Enemy.EnemyType.HADES)
                         PatternHades1(enemy);
-                    timer = 60*2;
+                    // TODO: Change the value based on the difficulty
+                    //timer = 60*2;
+                    timer = 60*4;
                 }
             }
             
@@ -130,6 +135,7 @@ namespace PlasmaPurgatory
             foreach (EnemyData enemyData in enemies)
                 for (int i = 0; i < enemyData.patterns.Count; i++)
                     for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
+                        if (enemyData.patterns[i].Bullets[j] != null)
                         enemyData.patterns[i].Bullets[j].Update(gameTime);
 
             player.Update(gameTime);
@@ -260,7 +266,7 @@ namespace PlasmaPurgatory
             Vector2 originPat = Had.enemy.Position;
             originPat.X += Had.enemy.Texture.Width / 2;
             originPat.Y += Had.enemy.Texture.Height / 2;
-            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.MANDELBROT_STAR, bulletProperties, contentManager, graphicsDevice, originPat, 50);
+            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.MANDELBROT_SUN, bulletProperties, contentManager, graphicsDevice, originPat, 50);
 
             circlePreset.ApplyPattern();
             Had.patterns.Add(circlePreset);
@@ -279,8 +285,8 @@ namespace PlasmaPurgatory
 
             foreach (EnemyData enemyData in enemies)
                 for (int i = 0; i < enemyData.patterns.Count; i++)
-                for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
-                    enemyData.patterns[i].Bullets[j].Draw(gameTime);
+                    for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
+                        enemyData.patterns[i].Bullets[j].Draw(gameTime);
         }
     }
 }

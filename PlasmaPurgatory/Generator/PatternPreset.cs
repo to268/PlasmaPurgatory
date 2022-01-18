@@ -24,7 +24,7 @@ namespace PlasmaPurgatory.Generator
             CIRCLE,
             SHOTGUN,
             MANDELBROT_SPIRAL,
-            MANDELBROT_STAR,
+            MANDELBROT_SUN,
             MANDELBROT_DUAL_SPIRAL,
         }
         
@@ -99,7 +99,7 @@ namespace PlasmaPurgatory.Generator
                     break;
 
                 case PresetName.MANDELBROT_SPIRAL:
-                case PresetName.MANDELBROT_STAR:
+                case PresetName.MANDELBROT_SUN:
                 case PresetName.MANDELBROT_DUAL_SPIRAL:
                     MandelbrotPointsCalculation();
                     break;
@@ -121,7 +121,7 @@ namespace PlasmaPurgatory.Generator
                     mandelbrotComplex = new System.Numerics.Complex(-0.05, -0.63);
                     break;
 
-                case PresetName.MANDELBROT_STAR:
+                case PresetName.MANDELBROT_SUN:
                     bulletCount = 40;
                     paddingMultiplier = 12;
 
@@ -246,7 +246,7 @@ namespace PlasmaPurgatory.Generator
                     break;
 
                 // Only works with 40 bullets and a multiplier of 12
-                case PresetName.MANDELBROT_STAR:
+                case PresetName.MANDELBROT_SUN:
                     padding -= new Vector2(graphicsDevice.Viewport.Width / 3.2f, graphicsDevice.Viewport.Height / 6.8f);
                     break;
 
