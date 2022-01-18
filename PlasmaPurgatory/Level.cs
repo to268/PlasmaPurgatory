@@ -33,6 +33,9 @@ namespace PlasmaPurgatory
         //private TiledMapRenderer _tiledMapRenderer;
 
         private Song bgm;
+        private int timer;
+        private int startCount;
+        private int midCount;
 
         public Level(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
@@ -48,9 +51,25 @@ namespace PlasmaPurgatory
 
             player = new Player(contentManager, graphicsDevice);
 
-            //CreateBigGarry();
-            //CreateBarbarossa();
-            CreateDatass();
+            CreateBarbarossa();
+            CreateBarbarossa();
+            CreateBarbarossa();
+
+            startCount = enemies.Count;
+            midCount = enemies.Count - 1;
+
+            if (enemies.Count != startCount)
+            {
+                CreateDatass();
+                CreateDatass();
+            }
+
+            if (midCount != enemies.Count - 1)
+            {
+                CreateBigGarry();
+                CreateBigGarry();
+                CreateBigGarry();
+            }
 
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Initialize();
@@ -61,6 +80,7 @@ namespace PlasmaPurgatory
 
 
             player.Initialize();
+            timer = 0;
         }
 
         public void LoadContent()
@@ -90,8 +110,24 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
+            Debug.WriteLine(timer);
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Update(gameTime);
+
+            foreach (EnemyData enemy in enemies)
+            {
+                if (timer <= 0)
+                {
+                    Debug.WriteLine(enemy.enemy.Type);
+                    if (enemy.enemy.Type == Enemy.EnemyType.BARBAROSSA)
+                        CreateBarbarossaPattern(enemy);
+                    if (enemy.enemy.Type == Enemy.EnemyType.BIGGARRY)
+                        CreateBigGarryPattern(enemy);
+                    if (enemy.enemy.Type == Enemy.EnemyType.DATASS)
+                        CreateDatassPattern(enemy);
+                    timer = 60 * 2;
+                }
+            }
 
             foreach (EnemyData enemyData in enemies)
                 for (int i = 0; i < enemyData.patterns.Count; i++)
@@ -99,6 +135,7 @@ namespace PlasmaPurgatory
                         enemyData.patterns[i].Bullets[j].Update(gameTime);
 
             player.Update(gameTime);
+            timer--;
         }
 
         private void CreateBigGarry()
@@ -108,6 +145,11 @@ namespace PlasmaPurgatory
             BigGar.patterns = new List<PatternPreset>();
             BigGar.enemy.LoadContent();
 
+            enemies.Add(BigGar);
+        }
+
+        private void CreateBigGarryPattern(EnemyData BigGar)
+        {
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
             polarProperties.startPhase = 0;
@@ -124,11 +166,9 @@ namespace PlasmaPurgatory
             Vector2 originPat = BigGar.enemy.Position;
             originPat.X += BigGar.enemy.Texture.Width / 2;
             originPat.Y += BigGar.enemy.Texture.Height / 2;
-            PatternPreset circlePreset= new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 10);
+            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 10);
 
             BigGar.patterns.Add(circlePreset);
-
-            enemies.Add(BigGar);
         }
 
         private void CreateDatass()
@@ -138,6 +178,13 @@ namespace PlasmaPurgatory
             Dat.patterns = new List<PatternPreset>();
             Dat.enemy.LoadContent();
 
+            CreateDatassPattern(Dat);
+
+            enemies.Add(Dat);
+        }
+
+        private void CreateDatassPattern(EnemyData Dat)
+        {
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
             polarProperties.startPhase = 0;
@@ -157,8 +204,6 @@ namespace PlasmaPurgatory
             PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.SHOTGUN, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 3);
 
             Dat.patterns.Add(circlePreset);
-
-            enemies.Add(Dat);
         }
 
         private void CreateBarbarossa()
@@ -168,6 +213,11 @@ namespace PlasmaPurgatory
             Bar.patterns = new List<PatternPreset>();
             Bar.enemy.LoadContent();
 
+            enemies.Add(Bar);
+        }
+
+        private void CreateBarbarossaPattern(EnemyData Bar)
+        {
             PatternPreset.PolarProperties polarProperties = new PatternPreset.PolarProperties();
             polarProperties.startMagnitude = 40f;
             polarProperties.startPhase = MathsUtils.DegresToRadians(90f);
@@ -187,8 +237,16 @@ namespace PlasmaPurgatory
             PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 1);
 
             Bar.patterns.Add(circlePreset);
+        }
 
-            enemies.Add(Bar);
+        private void CreateHades()
+        {
+            EnemyData Had = new EnemyData();
+            Had.enemy = new Enemy(contentManager, graphicsDevice, Enemy.EnemyType.HADES);
+            Had.patterns = new List<PatternPreset>();
+            Had.enemy.LoadContent();
+
+            enemies.Add(Had);
         }
 
         public void Draw(GameTime gameTime)

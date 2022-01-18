@@ -35,7 +35,6 @@ namespace PlasmaPurgatory
             rectangle = new Rectangle((int)position.X, (int)position.Y, 30, 30);
             spriteBatch = new SpriteBatch(graphicsDevice);
             health = MAX_PLAYER_HP;
-            attackPos = new Vector2(position.X, position.Y - 100);
             isCooldown = false;
             timer = 60;
         }
@@ -88,11 +87,13 @@ namespace PlasmaPurgatory
 
         public void Draw(GameTime gameTime)
         {
+            attackPos = new Vector2(position.X, position.Y - 50);
             spriteBatch.Begin();
             spriteBatch.Draw(texture, position, null, Color.White, 0f, originPlayer, 0.5f,  SpriteEffects.None, 0f);
             if (keyboardState.IsKeyDown(Keys.Space) && isCooldown == false)
             {
-                spriteBatch.Draw(attack, attackPos, null, Color.White, 0f, new Vector2(0,0), 4f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(attack, attackPos, null, Color.White, 0f,
+                    new Vector2(attack.Width/2,attack.Height/2), 4f, SpriteEffects.None, 0f);
                 isCooldown = true;
             }
             spriteBatch.End();

@@ -24,6 +24,11 @@ namespace PlasmaPurgatory
             DEAD,
         }
 
+        public EnemyType Type
+        {
+            get { return type; }
+        }
+
         private EnemyType type;
         private EnemyState state;
         private Vector2 pointToReach;
