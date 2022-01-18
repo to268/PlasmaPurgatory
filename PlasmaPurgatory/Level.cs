@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Content;
@@ -109,12 +108,9 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
-            foreach (EnemyData enemy in enemies)
-                enemy.enemy.Update(gameTime);
-
-            foreach (EnemyData enemy in enemies)
+            if (timer <= 0)
             {
-                if (timer <= 0)
+                foreach (EnemyData enemy in enemies)
                 {
                     if (enemy.enemy.Type == Enemy.EnemyType.BARBAROSSA)
                         CreateBarbarossaPattern(enemy);
@@ -127,6 +123,9 @@ namespace PlasmaPurgatory
                     timer = 60*2;
                 }
             }
+            
+            foreach (EnemyData enemy in enemies)
+                enemy.enemy.Update(gameTime);
             
             foreach (EnemyData enemyData in enemies)
                 for (int i = 0; i < enemyData.patterns.Count; i++)
