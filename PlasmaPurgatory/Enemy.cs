@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace PlasmaPurgatory
 {
@@ -24,21 +26,22 @@ namespace PlasmaPurgatory
             DEAD,
         }
 
-        public EnemyType Type
-        {
-            get { return type; }
-        }
-
         private EnemyType type;
         private EnemyState state;
         private Vector2 pointToReach;
         private bool isMoving;
+        private SoundEffect hitSound;
         
         private const float SPEED = 0.02f;
 
         public EnemyState State
         {
             get { return state; }
+        }
+        
+        public EnemyType Type
+        {
+            get { return type; }
         }
         
         public Vector2 Position
@@ -114,6 +117,7 @@ namespace PlasmaPurgatory
                     break;
             }
             
+            hitSound = contentManager.Load<SoundEffect>("enemyHit");
             rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
@@ -147,7 +151,8 @@ namespace PlasmaPurgatory
         public void TakeDamage()
         {
             health--;
-
+            hitSound.Play(0.6f, 0f, 0f);
+            
             if (health == 0)
                 state = EnemyState.DEAD;
         }
@@ -161,17 +166,22 @@ namespace PlasmaPurgatory
 
             if (direction == 0 && position.X > 0)
             {
-                amount = -random.Next(0, (int)(position.X - texture.Width));
+                amount = -random.Next(0, (int)(position.X - texture.Width / 10f));
                 pointToReach.X = (amount + position.X);
             }
             else if (position.X < graphicsDevice.Viewport.Width - texture.Width)
             {
-                amount = random.Next(0, (int)(graphicsDevice.Viewport.Width - (position.X  + texture.Width)));
+                amount = random.Next(0, (int)(graphicsDevice.Viewport.Width - (position.X  + texture.Width / 10f)));
                 pointToReach.X = (position.X + amount);
             }
             
             movement.X = (pointToReach.X - position.X) * SPEED;
             isMoving = true;
+
+            if (type == EnemyType.BIGGARRY)
+                Debug.WriteLine("BIGGARRY: " + movement.X);
+            if (type == EnemyType.HADES)
+                Debug.WriteLine("HADES: " + movement.X);
         }
 
         private void Move()

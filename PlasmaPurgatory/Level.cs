@@ -13,7 +13,6 @@ namespace PlasmaPurgatory
 {
     public class Level
     {
-
         public struct EnemyData
         {
             public Enemy enemy;
@@ -42,7 +41,6 @@ namespace PlasmaPurgatory
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
             enemies = new List<EnemyData>();
-            
         }
 
         public void Initialize()
@@ -51,14 +49,14 @@ namespace PlasmaPurgatory
 
             player = new Player(contentManager, graphicsDevice);
 
-            //CreateHades();
+            CreateHades();
             //CreateBigGarry();
-            CreateBigGarry();
+            //CreateBigGarry();
             
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Initialize();
 
-            CreateBarbarossaPattern(enemies[0]);
+            //CreateBarbarossaPattern(enemies[0]);
             //CreateBarbarossaPattern(enemies[1]);
             //CreateBarbarossaPattern(enemies[2]);
 

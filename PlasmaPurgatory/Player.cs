@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace PlasmaPurgatory
 {
@@ -18,6 +20,7 @@ namespace PlasmaPurgatory
         private Texture2D attack;
         private Vector2 attackPos;
         private Rectangle rectAttack;
+        private SoundEffect attackSound;
         private bool isUnderCooldown;
         private int timer;
         private bool isAttacking;
@@ -51,7 +54,7 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             position = new Vector2(graphicsDevice.Viewport.Width / 2f, 600);
-            rectangle = new Rectangle((int)position.X - 160, (int)position.Y - 160, 30, 30);
+            rectangle = new Rectangle((int)position.X - 180, (int)position.Y - 600, 10, 10);
             spriteBatch = new SpriteBatch(graphicsDevice);
             rectAttack = new Rectangle();
             health = MAX_PLAYER_HP;
@@ -65,6 +68,7 @@ namespace PlasmaPurgatory
         {
             attack = contentManager.Load<Texture2D>("Attack");
             texture = contentManager.Load<Texture2D>("sGehenna");
+            attackSound = contentManager.Load<SoundEffect>("attackSound");
             originPlayer = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
@@ -116,17 +120,25 @@ namespace PlasmaPurgatory
             attackPos = new Vector2(position.X, position.Y - 50);
             spriteBatch.Begin();
             spriteBatch.Draw(texture, position, null, Color.White, 0f, originPlayer, 0.5f,  SpriteEffects.None, 0f);
+            CheckAttack();
+            spriteBatch.End();
+        }
+
+        private void CheckAttack()
+        {
+            
             if (keyboardState.IsKeyDown(Keys.Space) && isUnderCooldown == false)
             {
                 spriteBatch.Draw(attack, attackPos, null, Color.White, 0f,
                     new Vector2(attack.Width / 2f,attack.Height / 2f), 4f, SpriteEffects.None, 0f);
-                rectAttack = new((int)(attackPos.X - (attack.Width / 2) - 10), (int)(attackPos.Y - (attack.Height / 2) - 45), 
-                                            attack.Width, attack.Height);
+                rectAttack = new((int)(attackPos.X - (attack.Width / 2f) - 10),
+                                        (int)(attackPos.Y - (attack.Height / 2f) - 45), 
+                                         attack.Width, attack.Height);
                 
+                attackSound.Play(0.2f, 0f, 0f);
                 isAttacking = true;
                 isUnderCooldown = true;
             }
-            spriteBatch.End();
         }
 
         public void TakeDamage()

@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:Attack.png
 
+#begin attackSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:attackSound.wav
+
 #begin Barbarossa.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -72,6 +78,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Datass.png
+
+#begin enemyHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:enemyHit.wav
 
 #begin Exit.png
 /importer:TextureImporter
