@@ -14,7 +14,7 @@ namespace PlasmaPurgatory
     public class Level
     {
 
-        private struct EnemyData
+        public struct EnemyData
         {
             public Enemy enemy;
             public List<PatternPreset> patterns;
@@ -51,9 +51,9 @@ namespace PlasmaPurgatory
 
             player = new Player(contentManager, graphicsDevice);
 
-            CreateBarbarossa();
-            CreateBarbarossa();
-            CreateBarbarossa();
+            CreateHades();
+            CreateBigGarry();
+            CreateBigGarry();
             
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Initialize();
@@ -122,7 +122,9 @@ namespace PlasmaPurgatory
                         CreateBigGarryPattern(enemy);
                     if (enemy.enemy.Type == Enemy.EnemyType.DATASS)
                         CreateDatassPattern(enemy);
-                    timer = 300;
+                    if (enemy.enemy.Type == Enemy.EnemyType.HADES)
+                        PatternHades1(enemy);
+                    timer = 60*2;
                 }
             }
             
@@ -249,21 +251,37 @@ namespace PlasmaPurgatory
             enemies.Add(had);
         }
 
+        private void PatternHades1(EnemyData Had)
+        {
+            Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
+            bulletProperties.movementSpeed = -0.17f;
+            bulletProperties.rotationSpeed = 0.006f;
+            bulletProperties.bulletProbability = 2;
+
+            Vector2 originPat = Had.enemy.Position;
+            originPat.X += Had.enemy.Texture.Width / 2;
+            originPat.Y += Had.enemy.Texture.Height / 2;
+            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.MANDELBROT_STAR, bulletProperties, contentManager, graphicsDevice, originPat, 50);
+
+            circlePreset.ApplyPattern();
+            Had.patterns.Add(circlePreset);
+        }
+
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
             spriteBatch.Draw(map, mapPos, Color.White);
             spriteBatch.End();
 
-            foreach(EnemyData enemyData in enemies)
-                for (int i = 0; i < enemyData.patterns.Count; i++)
-                    for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
-                        enemyData.patterns[i].Bullets[j].Draw(gameTime);
-
             foreach (EnemyData enemy in enemies)
                 enemy.enemy.Draw(gameTime);
 
             player.Draw(gameTime);
+
+            foreach (EnemyData enemyData in enemies)
+                for (int i = 0; i < enemyData.patterns.Count; i++)
+                for (int j = 0; j < enemyData.patterns[i].Bullets.Count; j++)
+                    enemyData.patterns[i].Bullets[j].Draw(gameTime);
         }
     }
 }

@@ -5,7 +5,7 @@ using MonoGame.Extended.Sprites;
 
 namespace PlasmaPurgatory
 {
-    class EntitiesUtils
+    public class EntitiesUtils
     {
         protected enum AnimationState { IDLE, WALKNORTH, WALKSOUTH, WALKEAST, WALKWEST, ATTACK };
 
@@ -20,6 +20,11 @@ namespace PlasmaPurgatory
         protected Vector2 position;
         protected Vector2 movement;
         protected int health;
+
+        public Rectangle Rectangle
+        {
+            get { return rectangle; }
+        }
 
         protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
         {

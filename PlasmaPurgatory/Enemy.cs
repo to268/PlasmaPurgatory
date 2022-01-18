@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PlasmaPurgatory
 {
-    class Enemy : EntitiesUtils
+    public class Enemy : EntitiesUtils
     {
         public enum EnemyType
         {
@@ -113,7 +113,9 @@ namespace PlasmaPurgatory
                 case EnemyType.BIGGARRY:
                     texture = contentManager.Load<Texture2D>("BigGarry");
                     break;
-                
+                case EnemyType.HADES:
+                    texture = contentManager.Load<Texture2D>("Hades");
+                    break;
                 default:
                     break;
             }
