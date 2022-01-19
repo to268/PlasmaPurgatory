@@ -68,10 +68,8 @@ namespace PlasmaPurgatory
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             titleTexture = contentManager.Load<Texture2D>("TitleScreen");
-            //tilesLevelTexture = contentManager.Load<Texture2D>("TilesLevel");
-            //textBoxTexture = contentManager.Load<Texture2D>("TextBox");
-            //buttonTexture = contentManager.Load<Texture2D>("Button");
             logoTexture = contentManager.Load<Texture2D>("Logo");
+            
             buttons[0].normalTexture =contentManager.Load<Texture2D>("Play"); 
             buttons[0].hoverTexture = contentManager.Load<Texture2D>("PlayNeg");
             buttons[0].origin = new Vector2(buttons[0].normalTexture.Width / 2f, buttons[0].normalTexture.Height / 2f);
@@ -102,11 +100,11 @@ namespace PlasmaPurgatory
                     // Play Button
                     if (i == 0)
                     {
-                        // TODO: Fix the bug where the hoverTexture is not displayed before changing scene
                         Draw(gameTime);
                         sceneManager.ChangeScene(SceneManager.SceneType.LEVEL);
                     }
 
+                    // Exit Button
                     if (i == 1)
                     {
                         game1.ExitGame();

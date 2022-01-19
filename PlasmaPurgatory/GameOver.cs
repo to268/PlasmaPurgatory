@@ -96,11 +96,11 @@ namespace PlasmaPurgatory
                     // Play Button
                     if (i == 0)
                     {
-                        // TODO: Fix the bug where the hoverTexture is not displayed before changing scene
                         Draw(gameTime);
                         sceneManager.ChangeScene(SceneManager.SceneType.LEVEL);
                     }
 
+                    // Exit Button
                     if (i == 1)
                     {
                         Draw(gameTime);
