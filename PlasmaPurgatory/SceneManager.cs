@@ -36,15 +36,16 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
-            // Load SubClasses
             menu = new Menu(graphicsDevice, contentManager, this, game1);
-            gameOver = new GameOver(graphicsDevice, contentManager, this, game1);
-            //level = new Level(graphicsDevice, contentManager);
 
             menu.Initialize();
             if (level != null)
             {
                 level.Initialize();
+            }
+            else if (gameOver != null)
+            {
+                gameOver.Initialize();
             }
         }
 
@@ -54,6 +55,10 @@ namespace PlasmaPurgatory
             if (level != null)
             {
                 level.LoadContent();
+            } 
+            else if (gameOver != null)
+            {
+                gameOver.LoadContent();
             }
         }
 
@@ -97,15 +102,30 @@ namespace PlasmaPurgatory
         public void ChangeScene(SceneType scene)
         {
             Thread.Sleep(BEDTIME);
+            
             if (scene == SceneType.LEVEL)
             {
-                level = new Level(graphicsDevice, contentManager, player);
+                level = new Level(graphicsDevice, contentManager, player, this);
                 level.Initialize();
                 level.LoadContent();
+                gameOver = null;
+            } 
+            else if (scene == SceneType.GAMEOVER)
+            {
+                gameOver = new GameOver(graphicsDevice, contentManager, this, game1);
+                gameOver.Initialize();
+                gameOver.LoadContent();
+                level = null;
             }
-            currentScene = scene;
-
+            else if (scene == SceneType.MENU)
+            {
+                menu = null;   
+                menu = new Menu(graphicsDevice, contentManager, this, game1);
+                menu.Initialize();
+                menu.LoadContent();
+            }
             
+            currentScene = scene;
         }
     }
 }

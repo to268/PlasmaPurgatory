@@ -48,7 +48,7 @@ namespace PlasmaPurgatory
             this.sceneManager = sceneManager;
             this.game1 = game1;
 
-            buttons = new GameOver.Button[BUTTONS_COUNT];
+            buttons = new Button[BUTTONS_COUNT];
             PopulateButtonArray();
 
         }
@@ -57,10 +57,10 @@ namespace PlasmaPurgatory
         {
 
             // Start button properties
-            buttons[0].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3f);
+            buttons[0].position = new Vector2(graphicsDevice.Viewport.Width / 2f, 40);
             buttons[0].color = Color.White;
 
-            buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 2f);
+            buttons[1].position = new Vector2(graphicsDevice.Viewport.Width / 2f, 120);
             buttons[1].color = Color.White;
         }
 
@@ -73,8 +73,8 @@ namespace PlasmaPurgatory
             //tilesLevelTexture = contentManager.Load<Texture2D>("TilesLevel");
             //textBoxTexture = contentManager.Load<Texture2D>("TextBox");
             //buttonTexture = contentManager.Load<Texture2D>("Button");
-            buttons[0].normalTexture = contentManager.Load<Texture2D>("Return");
-            buttons[0].hoverTexture = contentManager.Load<Texture2D>("ReturnNeg");
+            buttons[0].normalTexture = contentManager.Load<Texture2D>("Play");
+            buttons[0].hoverTexture = contentManager.Load<Texture2D>("PlayNeg");
             buttons[0].origin = new Vector2(buttons[0].normalTexture.Width / 2f, buttons[0].normalTexture.Height / 2f);
             buttons[0].currentTexture = buttons[0].normalTexture;
 
@@ -110,7 +110,8 @@ namespace PlasmaPurgatory
 
                     if (i == 1)
                     {
-                        game1.ExitGame();
+                        Draw(gameTime);
+                        sceneManager.ChangeScene(SceneManager.SceneType.MENU);
                     }
                 }
             }
@@ -139,7 +140,7 @@ namespace PlasmaPurgatory
         private void PopulateButtonArray()
         {
             for (int i = 0; i < buttons.Length; i++)
-                buttons[i] = new GameOver.Button();
+                buttons[i] = new Button();
         }
     }
 }

@@ -40,14 +40,13 @@ namespace PlasmaPurgatory
         private const int MAX_ENEMIES = 3;
 
         private Texture2D life;
-
         private SceneManager sceneManager;
-        private Game1 game1;
 
-        public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, Player player)
+        public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, Player player, SceneManager sceneManager)
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
+            this.sceneManager = sceneManager;
             this.player = player;
 
             enemies = new List<EnemyData>();
@@ -56,7 +55,6 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
-            sceneManager = new SceneManager(contentManager, graphicsDevice, game1);
             mapPos = new Vector2(0, 0);
             player = new Player(contentManager, graphicsDevice);
 
@@ -97,11 +95,18 @@ namespace PlasmaPurgatory
         public void Update(GameTime gameTime)
         {
             if (player.Health == 2)
+            {
                 life = contentManager.Load<Texture2D>("Life2");
+            }
             else if (player.Health == 1)
+            {
                 life = contentManager.Load<Texture2D>("Life1");
+            }
             else if (player.Health <= 0)
+            {
                  sceneManager.ChangeScene(SceneManager.SceneType.GAMEOVER);
+                 return;
+            }
 
             Collisions.CheckCollision(player, player.RectAttack, enemies);
             RemoveDeadEnemies();
@@ -117,19 +122,6 @@ namespace PlasmaPurgatory
                 // Dequeue hades
                 enemies.Add(enemiesQueue.Dequeue());
                 stage = LevelStage.BOSS_STAGE1;
-            }
-            
-            switch (stage)
-            {
-                case LevelStage.NORMAL:
-                    break;
-                
-                // HADES (2 stages)
-                case LevelStage.BOSS_STAGE1:
-                    break;
-                
-                case LevelStage.BOSS_STAGE2:
-                    break;
             }
             
             SpawnPatterns();
@@ -168,14 +160,14 @@ namespace PlasmaPurgatory
             polarProperties.multiplierPhase = 1f;
 
             Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
-            bulletProperties.movementSpeed = 0.18f;
+            bulletProperties.movementSpeed = 0.14f;
             bulletProperties.rotationSpeed = 0;
             bulletProperties.bulletProbability = 2;
 
             Vector2 originPat = bigGar.enemy.Position;
             originPat.X += bigGar.enemy.Texture.Width / 2f;
             originPat.Y += bigGar.enemy.Texture.Height / 2f;
-            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 10);
+            PatternPreset circlePreset = new PatternPreset(PatternPreset.PresetName.CIRCLE, polarProperties, bulletProperties, contentManager, graphicsDevice, originPat, 8);
             
             circlePreset.ApplyPattern();
             bigGar.patterns.Add(circlePreset);
@@ -202,7 +194,7 @@ namespace PlasmaPurgatory
             polarProperties.multiplierPhase = 1f;
 
             Bullet.BulletProperties bulletProperties = new Bullet.BulletProperties();
-            bulletProperties.movementSpeed = 0.16f;
+            bulletProperties.movementSpeed = 0.12f;
             bulletProperties.rotationSpeed = -MathsUtils.DegresToRadians(0.05f);
             bulletProperties.bulletProbability = 2;
 
@@ -426,15 +418,15 @@ namespace PlasmaPurgatory
                     switch (stage)
                     {
                        case LevelStage.NORMAL:
-                           timer = 130;
+                           timer = 140;
                            break;
                        
                        case LevelStage.BOSS_STAGE1:
-                           timer = 120;
+                           timer = 130;
                            break;
                        
                        case LevelStage.BOSS_STAGE2:
-                           timer = 150;
+                           timer = 180;
                            break;
                     }
                 }
@@ -446,11 +438,19 @@ namespace PlasmaPurgatory
             /*
              * Level Stages:
              * NORMAL: 3 BARBAROSSAs next 3 DATASSs next 3 BIGGARRYs,
+             * 3 BARBAROSSAs next 3 DATASSs next 3 BIGGARRYs,
              * 1 BARBAROSSAs next 2 DATASSs next 3 BIGGARRYs
              * BOSS_STAGE1: HADES (normal)
              * BOSS_STAGE2: HADES (hard)
              */
 
+            for (int i = 0; i < MAX_ENEMIES; i++)
+                enemiesQueue.Enqueue(CreateBarbarossa());
+            for (int i = 0; i < MAX_ENEMIES; i++)
+                enemiesQueue.Enqueue(CreateDatass());
+            for (int i = 0; i < MAX_ENEMIES; i++)
+                enemiesQueue.Enqueue(CreateBigGarry());
+            
             for (int i = 0; i < MAX_ENEMIES; i++)
                 enemiesQueue.Enqueue(CreateBarbarossa());
             for (int i = 0; i < MAX_ENEMIES; i++)
