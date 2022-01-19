@@ -9,8 +9,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace PlasmaPurgatory
 {
-
-    class Player : EntitiesUtils
+    public class Player : EntitiesUtils
     {
         public enum CollisionType { NONE, ENNEMIS, BULLET, PLAYER };
 

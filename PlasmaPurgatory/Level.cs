@@ -39,10 +39,16 @@ namespace PlasmaPurgatory
 
         private const int MAX_ENEMIES = 3;
 
-        public Level(GraphicsDevice graphicsDevice, ContentManager contentManager)
+        private Texture2D life;
+
+        private SceneManager sceneManager;
+        private Game1 game1;
+
+        public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, Player player)
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
+            this.player = player;
 
             enemies = new List<EnemyData>();
             enemiesQueue = new Queue<EnemyData>();
@@ -50,6 +56,7 @@ namespace PlasmaPurgatory
 
         public void Initialize()
         {
+            sceneManager = new SceneManager(contentManager, graphicsDevice, game1);
             mapPos = new Vector2(0, 0);
             player = new Player(contentManager, graphicsDevice);
 
@@ -65,6 +72,8 @@ namespace PlasmaPurgatory
 
         public void LoadContent()
         {
+            life = contentManager.Load<Texture2D>("Life3");
+
             MediaPlayer.Stop();
             spriteBatch = new SpriteBatch(graphicsDevice);
 
@@ -87,6 +96,13 @@ namespace PlasmaPurgatory
 
         public void Update(GameTime gameTime)
         {
+            if (player.Health == 2)
+                life = contentManager.Load<Texture2D>("Life2");
+            else if (player.Health == 1)
+                life = contentManager.Load<Texture2D>("Life1");
+            else if (player.Health <= 0)
+                 sceneManager.ChangeScene(SceneManager.SceneType.GAMEOVER);
+
             Collisions.CheckCollision(player, player.RectAttack, enemies);
             RemoveDeadEnemies();
             
@@ -368,6 +384,7 @@ namespace PlasmaPurgatory
         {
             spriteBatch.Begin();
             spriteBatch.Draw(map, mapPos, Color.White);
+            spriteBatch.Draw(life, new Vector2(0,0), Color.White);
             spriteBatch.End();
 
             foreach (EnemyData enemy in enemies)
@@ -433,6 +450,7 @@ namespace PlasmaPurgatory
              * BOSS_STAGE1: HADES (normal)
              * BOSS_STAGE2: HADES (hard)
              */
+
             for (int i = 0; i < MAX_ENEMIES; i++)
                 enemiesQueue.Enqueue(CreateBarbarossa());
             for (int i = 0; i < MAX_ENEMIES; i++)
