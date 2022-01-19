@@ -34,7 +34,6 @@ namespace PlasmaPurgatory
         private bool isBulletDead;
         private int bulletProbability;
         
-        // TODO: Remove unused fields
         public BulletType Type
         {
             get { return type; }
@@ -43,12 +42,6 @@ namespace PlasmaPurgatory
         public Rectangle Rectangle
         {
             get { return rectangle; }
-        }
-
-        public bool IsBulletDead
-        {
-            get { return isBulletDead; }
-            set { isBulletDead = value; }
         }
 
         public Bullet(ContentManager contentManager, GraphicsDevice graphicsDevice, Vector2 origin, Vector2 targetPosition, 
@@ -122,7 +115,6 @@ namespace PlasmaPurgatory
                 position += movementVector * movementSpeed;
         }
 
-        // TODO: Find a way to fix the pattern to shrink for no obvious reasons
         private void RotateBullet()
         {
             MathsUtils.Polar polar = MathsUtils.VectorToPolar(position - origin);

@@ -1,70 +1,70 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.Sprites;
 
 namespace PlasmaPurgatory
 {
     public class EntitiesUtils
     {
-        // TODO: Refactor inheritance
-        protected enum AnimationState { IDLE, WALKNORTH, WALKSOUTH, WALKEAST, WALKWEST, ATTACK };
-
         protected ContentManager contentManager;
         protected GraphicsDevice graphicsDevice;
 
-        protected AnimationState animationState;
         protected Texture2D texture;
         protected SpriteBatch spriteBatch;
         protected Rectangle rectangle;
+        protected SoundEffect soundEffect;
 
         protected Vector2 position;
         protected Vector2 movement;
         protected int health;
+        protected bool isDead;
 
         public Rectangle Rectangle
         {
             get { return rectangle; }
         }
         
+        public Texture2D Texture
+        {
+            get { return texture; }
+        }
+        
         public int Health
         {
             get { return health; }
         }
-
-        protected bool CheckBound(Vector2 postion, GraphicsDevice graphicsDevice, Texture2D texture)
+        
+        public bool IsDead
         {
-            if (postion.X > graphicsDevice.Viewport.Width - texture.Width / 8f)
+            get { return isDead; }
+            set { isDead = value; }
+        }
+
+        protected bool CheckBound(Vector2 postion, GraphicsDevice gDevice, Texture2D tex)
+        {
+            if (postion.X > gDevice.Viewport.Width - tex.Width / 8f)
             {
-                position.X = graphicsDevice.Viewport.Width - texture.Width / 8f;
+                position.X = gDevice.Viewport.Width - tex.Width / 8f;
                 return false;
             }
-            else if (postion.Y > graphicsDevice.Viewport.Height - texture.Height / 4f)
+            else if (postion.Y > gDevice.Viewport.Height - tex.Height / 4f)
             {
-                position.Y = graphicsDevice.Viewport.Height - texture.Height / 4f;
+                position.Y = gDevice.Viewport.Height - tex.Height / 4f;
                 return false;
             }
-            else if (postion.X - (texture.Width / 9f) < 0)
+            else if (postion.X - (tex.Width / 9f) < 0)
             {
-                position.X = texture.Width / 9f;
+                position.X = tex.Width / 9f;
                 return false;
             }
-            else if (postion.Y - (texture.Height / 5f) < 0)
+            else if (postion.Y - (tex.Height / 5f) < 0)
             {
-                position.Y = texture.Height / 5f;
+                position.Y = tex.Height / 5f;
                 return false;
             }
 
             return true;
         } 
-
-        // TODO: Make a generic function to handle collisions
-        protected bool CheckCollision(Rectangle rectangle1, Rectangle rectangle2)
-        {
-            if (rectangle1.Intersects(rectangle2))
-                return false;
-
-            return true;
-        }
     }
 }

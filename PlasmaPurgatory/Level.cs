@@ -391,7 +391,7 @@ namespace PlasmaPurgatory
         private void RemoveDeadEnemies()
         {
             for (int i = 0; i < enemies.Count; i++)
-                if (enemies[i].enemy.State == Enemy.EnemyState.DEAD) 
+                if (enemies[i].enemy.IsDead) 
                     enemies.Remove(enemies[i]);
         }
 

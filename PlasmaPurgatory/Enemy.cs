@@ -16,25 +16,12 @@ namespace PlasmaPurgatory
             HADES,
         }
         
-        public enum EnemyState
-        {
-            ALIVE,
-            DEAD,
-        }
-
         private EnemyType type;
-        private EnemyState state;
         private Vector2 pointToReach;
         private bool isMoving;
-        private SoundEffect hitSound;
         
         private const float SPEED = 0.02f;
 
-        public EnemyState State
-        {
-            get { return state; }
-        }
-        
         public EnemyType Type
         {
             get { return type; }
@@ -45,18 +32,13 @@ namespace PlasmaPurgatory
             get { return position; }
         }
 
-        public Texture2D Texture
-        {
-            get { return texture; }
-        }
-
         public Enemy(ContentManager contentManager, GraphicsDevice graphicsDevice, EnemyType type)
         {
             this.contentManager = contentManager;
             this.graphicsDevice = graphicsDevice;
             this.type = type;
             
-            state = EnemyState.ALIVE;
+            isDead = false;
             isMoving = false;
             
             switch (type)
@@ -92,7 +74,6 @@ namespace PlasmaPurgatory
 
         public void LoadContent()
         {
-            // TODO: Load the correct texture
             switch (type)
             {
                 case EnemyType.BARBAROSSA:
@@ -112,13 +93,13 @@ namespace PlasmaPurgatory
                     break;
             }
             
-            hitSound = contentManager.Load<SoundEffect>("enemyHit");
+            soundEffect = contentManager.Load<SoundEffect>("enemyHit");
             rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (state == EnemyState.DEAD)
+            if (isDead)
                 return;
            
             if (position.X < 0 || position.X > graphicsDevice.Viewport.Width - texture.Width)
@@ -135,7 +116,7 @@ namespace PlasmaPurgatory
 
         public void Draw(GameTime gameTime)
         {
-            if (state == EnemyState.DEAD)
+            if (isDead)
                 return;
             
             spriteBatch.Begin();
@@ -146,13 +127,12 @@ namespace PlasmaPurgatory
         public void TakeDamage()
         {
             health--;
-            hitSound.Play(0.6f, 0f, 0f);
-            
+            soundEffect.Play(0.6f, 0f, 0f);
+
             if (health == 0)
-                state = EnemyState.DEAD;
+                isDead = true;
         }
 
-        // TODO: Try to make movement based on the player X position
         private void FindPath()
         {
             Random random = new Random();
@@ -182,6 +162,7 @@ namespace PlasmaPurgatory
                 isMoving = false;
         }
 
+        // This functions should never be called
         private void Reset()
         {
             pointToReach = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 4f);

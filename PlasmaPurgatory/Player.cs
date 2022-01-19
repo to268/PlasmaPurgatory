@@ -8,18 +8,14 @@ namespace PlasmaPurgatory
 {
     public class Player : EntitiesUtils
     {
-        public enum CollisionType { NONE, ENNEMIS, BULLET, PLAYER };
-
         private KeyboardState keyboardState;
         private Vector2 originPlayer;
         private Texture2D attack;
         private Vector2 attackPos;
         private Rectangle rectAttack;
-        private SoundEffect attackSound;
         private bool isUnderCooldown;
         private int timer;
         private bool isAttacking;
-        private bool isDead;
 
         private const float SPEED = 10;
         private const int MAX_PLAYER_HP = 3;
@@ -32,12 +28,6 @@ namespace PlasmaPurgatory
         public bool IsAttacking
         {
             get { return isAttacking; }
-        }
-
-        public bool IsDead
-        {
-            get { return isDead; }
-            set { isDead = value; }
         }
 
         public Player(ContentManager contentManager, GraphicsDevice graphicsDevice)
@@ -63,7 +53,7 @@ namespace PlasmaPurgatory
         {
             attack = contentManager.Load<Texture2D>("Attack");
             texture = contentManager.Load<Texture2D>("sGehenna");
-            attackSound = contentManager.Load<SoundEffect>("attackSound");
+            soundEffect = contentManager.Load<SoundEffect>("attackSound");
             originPlayer = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
@@ -71,13 +61,49 @@ namespace PlasmaPurgatory
         {
             if (isDead) return;
             
-            if (timer == 0)
+            HandleAttackCooldown();
+            HandleInputs();
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            if (isDead) return;
+            isAttacking = false;
+            
+            attackPos = new Vector2(position.X, position.Y - 50);
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, position, null, Color.White, 0f, originPlayer, 0.5f,  SpriteEffects.None, 0f);
+            CheckAttack();
+            spriteBatch.End();
+        }
+
+        private void CheckAttack()
+        {
+            if (keyboardState.IsKeyDown(Keys.Space) && isUnderCooldown == false)
             {
-                isUnderCooldown = false;
-                timer = 60;
+                spriteBatch.Draw(attack, attackPos, null, Color.White, 0f,
+                    new Vector2(attack.Width / 2f,attack.Height / 2f), 4f, SpriteEffects.None, 0f);
+                rectAttack = new((int)(attackPos.X - (attack.Width * 2)),
+                                        (int)(attackPos.Y - (attack.Height / 2f) - 35), 
+                                         attack.Width * 4, attack.Height);
+                
+                soundEffect.Play(0.2f, 0f, 0f);
+                isAttacking = true;
+                isUnderCooldown = true;
             }
+        }
+
+        public void TakeDamage()
+        {
+            health--;
+
+            if (health <= 0)
+                isDead = true;
+        }
+
+        private void HandleInputs()
+        {
             keyboardState = Keyboard.GetState();
-            animationState = AnimationState.IDLE;
 
             if (keyboardState.IsKeyDown(Keys.Space))
                 isAttacking = true;
@@ -99,49 +125,21 @@ namespace PlasmaPurgatory
             if (CheckBound(position, graphicsDevice, texture))
                 position += movement * SPEED;
 
-            timer--;
-
             rectangle.X = (int)position.X - 10;
             rectangle.Y = (int)position.Y - 10;
             
             movement = new Vector2(0, 0);
         }
-
-        public void Draw(GameTime gameTime)
+        
+        private void HandleAttackCooldown()
         {
-            if (isDead) return;
-            isAttacking = false;
-            
-            attackPos = new Vector2(position.X, position.Y - 50);
-            spriteBatch.Begin();
-            spriteBatch.Draw(texture, position, null, Color.White, 0f, originPlayer, 0.5f,  SpriteEffects.None, 0f);
-            CheckAttack();
-            spriteBatch.End();
-        }
-
-        private void CheckAttack()
-        {
-            
-            if (keyboardState.IsKeyDown(Keys.Space) && isUnderCooldown == false)
+            if (timer == 0)
             {
-                spriteBatch.Draw(attack, attackPos, null, Color.White, 0f,
-                    new Vector2(attack.Width / 2f,attack.Height / 2f), 4f, SpriteEffects.None, 0f);
-                rectAttack = new((int)(attackPos.X - (attack.Width * 2)),
-                                        (int)(attackPos.Y - (attack.Height / 2f) - 35), 
-                                         attack.Width * 4, attack.Height);
-                
-                attackSound.Play(0.2f, 0f, 0f);
-                isAttacking = true;
-                isUnderCooldown = true;
+                isUnderCooldown = false;
+                timer = 60;
             }
-        }
 
-        public void TakeDamage()
-        {
-            health--;
-
-            if (health <= 0)
-                isDead = true;
+            timer--;
         }
     }
 }
