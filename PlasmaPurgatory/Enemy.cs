@@ -62,29 +62,29 @@ namespace PlasmaPurgatory
             
             state = EnemyState.ALIVE;
             isMoving = false;
+            
             switch (type)
             {
                 case EnemyType.BARBAROSSA:
                     health = 1;
+                    position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 3.8f);
                     break;
                 
                 case EnemyType.DATASS:
                     health = 2;
+                    position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 4.5f);
                     break;
                 
                 case EnemyType.BIGGARRY:
                     health = 3;
+                    position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 9f);
                     break;
                 
                 case EnemyType.HADES:
+                    position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 20f);
                     health = 6;
                     break;
-
-                default:
-                    break;
             }
-
-            position = new Vector2(graphicsDevice.Viewport.Width / 2f, graphicsDevice.Viewport.Height / 4f);
         }
         
         public void Initialize()
@@ -110,10 +110,9 @@ namespace PlasmaPurgatory
                 case EnemyType.BIGGARRY:
                     texture = contentManager.Load<Texture2D>("BigGarry");
                     break;
+                
                 case EnemyType.HADES:
                     texture = contentManager.Load<Texture2D>("Hades");
-                    break;
-                default:
                     break;
             }
             

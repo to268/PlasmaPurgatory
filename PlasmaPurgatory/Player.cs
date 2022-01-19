@@ -54,7 +54,7 @@ namespace PlasmaPurgatory
         public void Initialize()
         {
             position = new Vector2(graphicsDevice.Viewport.Width / 2f, 600);
-            rectangle = new Rectangle((int)position.X - 180, (int)position.Y - 600, 10, 10);
+            rectangle = new Rectangle((int)position.X - 10, (int)position.Y - 10, 15, 15);
             spriteBatch = new SpriteBatch(graphicsDevice);
             rectAttack = new Rectangle();
             health = MAX_PLAYER_HP;
@@ -106,8 +106,8 @@ namespace PlasmaPurgatory
 
             timer--;
 
-            rectangle.X = (int)position.X;
-            rectangle.Y = (int)position.Y;
+            rectangle.X = (int)position.X - 10;
+            rectangle.Y = (int)position.Y - 10;
             
             movement = new Vector2(0, 0);
         }
@@ -131,9 +131,9 @@ namespace PlasmaPurgatory
             {
                 spriteBatch.Draw(attack, attackPos, null, Color.White, 0f,
                     new Vector2(attack.Width / 2f,attack.Height / 2f), 4f, SpriteEffects.None, 0f);
-                rectAttack = new((int)(attackPos.X - (attack.Width / 2f) - 10),
-                                        (int)(attackPos.Y - (attack.Height / 2f) - 45), 
-                                         attack.Width, attack.Height);
+                rectAttack = new((int)(attackPos.X - (attack.Width * 2)),
+                                        (int)(attackPos.Y - (attack.Height / 2f) - 35), 
+                                         attack.Width * 4, attack.Height);
                 
                 attackSound.Play(0.2f, 0f, 0f);
                 isAttacking = true;
