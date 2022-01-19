@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 
 namespace PlasmaPurgatory
 {
@@ -176,11 +172,6 @@ namespace PlasmaPurgatory
             
             movement.X = (pointToReach.X - position.X) * SPEED;
             isMoving = true;
-
-            if (type == EnemyType.BIGGARRY)
-                Debug.WriteLine("BIGGARRY: " + movement.X);
-            if (type == EnemyType.HADES)
-                Debug.WriteLine("HADES: " + movement.X);
         }
 
         private void Move()

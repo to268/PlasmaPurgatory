@@ -3,9 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Serialization;
 
 namespace PlasmaPurgatory
 {
@@ -34,11 +31,8 @@ namespace PlasmaPurgatory
         private Point mousePosition;
         
         private Texture2D titleTexture;
-        private Texture2D buttonTexture;
-        private Texture2D textBoxTexture;
         private Texture2D logoTexture;
         private Vector2 logoPos;
-        private Texture2D tilesLevelTexture;
 
         private Game1 game1;
         private Song bgm;

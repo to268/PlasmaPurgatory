@@ -32,7 +32,6 @@ namespace PlasmaPurgatory
 
         private Texture2D map;
         private Vector2 mapPos;
-
         private Song bgm;
         private int timer;
         private LevelStage stage;
@@ -42,12 +41,11 @@ namespace PlasmaPurgatory
         private Texture2D life;
         private SceneManager sceneManager;
 
-        public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, Player player, SceneManager sceneManager)
+        public Level(GraphicsDevice graphicsDevice, ContentManager contentManager, SceneManager sceneManager)
         {
             this.graphicsDevice = graphicsDevice;
             this.contentManager = contentManager;
             this.sceneManager = sceneManager;
-            this.player = player;
 
             enemies = new List<EnemyData>();
             enemiesQueue = new Queue<EnemyData>();

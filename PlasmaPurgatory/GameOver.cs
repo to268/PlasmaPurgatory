@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -27,7 +22,7 @@ namespace PlasmaPurgatory
         public const float scale = .3f;
         private const int BUTTONS_COUNT = 2;
 
-        private GameOver.Button[] buttons;
+        private Button[] buttons;
         private GraphicsDevice graphicsDevice;
         private SpriteBatch spriteBatch;
         private ContentManager contentManager;
@@ -36,8 +31,6 @@ namespace PlasmaPurgatory
         private Point mousePosition;
 
         private Texture2D titleTexture;
-        private Texture2D buttonTexture;
-
         private Game1 game1;
         private Song bgm;
 

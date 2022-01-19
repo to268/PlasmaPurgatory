@@ -23,7 +23,6 @@ namespace PlasmaPurgatory
         private GameOver gameOver;
         private Game1 game1;
         private SceneType currentScene;
-        private Player player;
 
         public SceneManager(ContentManager contentManager, GraphicsDevice graphicsDevice, Game1 game1)
         {
@@ -75,8 +74,6 @@ namespace PlasmaPurgatory
                 case SceneType.GAMEOVER:
                     gameOver.Update(gameTime);
                     break;
-                default:
-                    break;
             }
             
         }
@@ -94,8 +91,6 @@ namespace PlasmaPurgatory
                 case SceneType.GAMEOVER:
                     gameOver.Draw(gameTime);
                     break;
-                default:
-                    break;
             }
         }
 
@@ -105,7 +100,7 @@ namespace PlasmaPurgatory
             
             if (scene == SceneType.LEVEL)
             {
-                level = new Level(graphicsDevice, contentManager, player, this);
+                level = new Level(graphicsDevice, contentManager, this);
                 level.Initialize();
                 level.LoadContent();
                 gameOver = null;

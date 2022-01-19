@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace PlasmaPurgatory
 {
@@ -15,7 +12,6 @@ namespace PlasmaPurgatory
 
         private KeyboardState keyboardState;
         private Vector2 originPlayer;
-        private CollisionType collision;
         private Texture2D attack;
         private Vector2 attackPos;
         private Rectangle rectAttack;
